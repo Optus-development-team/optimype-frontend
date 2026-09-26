@@ -1,50 +1,9 @@
-import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import PhoneDemo from './PhoneDemo';
 import './WhyOptus.css';
 
 const WhyOptus = () => {
-  const [activeDemo, setActiveDemo] = useState(0);
-  const { t } = useTranslation();
-
-  const liveDemo = [
-    {
-      id: 1,
-      time: '09:23 AM',
-      customer: t('demo.customers.maria'),
-      message: t('demo.messages.productAvailable'),
-      agent: 'OPTUS Bot',
-      response: t('demo.responses.productResponse'),
-      action: t('demo.actions.instantResponse'),
-      color: '#6C5CE7'
-    },
-    {
-      id: 2,
-      time: '10:45 AM',
-      customer: t('demo.customers.carlos'),
-      message: t('demo.messages.scheduleAppointment'),
-      agent: 'OPTUS Scheduler',
-      response: t('demo.responses.scheduleResponse'),
-      action: t('demo.actions.autoScheduling'),
-      color: '#00D9A5'
-    },
-    {
-      id: 3,
-      time: '02:15 PM',
-      customer: t('demo.customers.ana'),
-      message: t('demo.messages.confirmOrder'),
-      agent: 'OPTUS Payments',
-      response: t('demo.responses.paymentResponse'),
-      action: t('demo.actions.automatedPayment'),
-      color: '#FF6B6B'
-    }
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveDemo((prev) => (prev + 1) % liveDemo.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+  const { t, i18n } = useTranslation();
 
   const metrics = [
     { value: '3 seg', label: t('whyOptus.metrics.responseTime'), icon: 'fas fa-bolt' },
@@ -87,63 +46,7 @@ const WhyOptus = () => {
           </p>
 
           <div className="demo-container" data-aos="zoom-in" data-aos-delay="200">
-            <div className="chat-simulation">
-              <div className="chat-header">
-                <div className="chat-status">
-                  <span className="status-dot"></span>
-                  <span>OPTUS IA activo</span>
-                </div>
-                <div className="chat-time">{liveDemo[activeDemo].time}</div>
-              </div>
-
-              <div className="chat-messages">
-                <div className="message customer-message">
-                  <div className="message-avatar">
-                    <i className="fas fa-user"></i>
-                  </div>
-                  <div className="message-content">
-                    <div className="message-name">{liveDemo[activeDemo].customer}</div>
-                    <div className="message-bubble customer">
-                      {liveDemo[activeDemo].message}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-
-                <div className="message agent-message">
-                  <div className="message-avatar bot">
-                    <i className="fas fa-robot"></i>
-                  </div>
-                  <div className="message-content">
-                    <div className="message-name">{liveDemo[activeDemo].agent}</div>
-                    <div className="message-bubble agent" style={{ borderColor: liveDemo[activeDemo].color }}>
-                      {liveDemo[activeDemo].response}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="chat-action" style={{ backgroundColor: liveDemo[activeDemo].color }}>
-                <i className="fas fa-check-circle"></i>
-                {liveDemo[activeDemo].action}
-              </div>
-            </div>
-
-            <div className="demo-indicators">
-              {liveDemo.map((_, index) => (
-                <button
-                  key={index}
-                  className={`indicator ${index === activeDemo ? 'active' : ''}`}
-                  onClick={() => setActiveDemo(index)}
-                  style={{ backgroundColor: index === activeDemo ? liveDemo[index].color : '#ddd' }}
-                />
-              ))}
-            </div>
+            <PhoneDemo key={i18n.language} />
           </div>
 
           {/* Metrics */}

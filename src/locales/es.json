@@ -21,6 +21,130 @@
     "liveTitle": "EN VIVO",
     "liveSubtitle": "Mira OPTUS en Acción",
     "demoSubtitle": "Así trabaja tu agente de IA cada segundo del día",
+    "phone": {
+      "agent": "OPTUS Bot",
+      "online": "en línea",
+      "typing": "escribiendo…",
+      "placeholder": "Escribe un mensaje…",
+      "restart": "Reiniciar demo",
+      "tryIt": "Pruébalo tú mismo",
+      "tryItDesc": "Toca una opción o escribe como si fueras un cliente",
+      "activityTitle": "Actividad del sistema",
+      "activityLive": "en vivo",
+      "greeting": "¡Hola! 👋 Soy el asistente de OPTUS. ¿En qué te puedo ayudar hoy?",
+      "fallback": "Puedo ayudarte a consultar un producto, agendar una cita o verificar un pago. Toca una de las opciones 👇",
+      "initEvent": {
+        "title": "Sistema iniciado",
+        "desc": "Agente conectado a WhatsApp"
+      },
+      "doneTitle": "Listo en segundos",
+      "scenarios": {
+        "product": {
+          "chip": "Consultar un producto",
+          "user": "¿Tienen esta polera en talla M?",
+          "keywords": [
+            "talla",
+            "producto",
+            "polera",
+            "precio",
+            "stock"
+          ],
+          "events": [
+            {
+              "title": "Mensaje recibido",
+              "desc": "Consulta de producto"
+            },
+            {
+              "title": "Consultando inventario",
+              "desc": "Polera talla M: 3 unidades"
+            }
+          ],
+          "bot": "¡Hola María! Sí, tenemos 3 unidades en talla M. El precio es Bs. 150. ¿Deseas reservarla?",
+          "followChip": "Sí, reservar",
+          "followUser": "Sí, resérvamela por favor",
+          "followEvents": [
+            {
+              "title": "Reserva creada",
+              "desc": "Stock actualizado: 2 unidades"
+            }
+          ],
+          "final": "¡Listo! Tu polera quedó reservada por 24 horas. Te envío el QR para pagar cuando quieras 💳",
+          "result": "Reserva confirmada"
+        },
+        "schedule": {
+          "chip": "Agendar una cita",
+          "user": "Necesito agendar una cita para mañana a las 3 PM.",
+          "keywords": [
+            "cita",
+            "agendar",
+            "reservar",
+            "hora",
+            "turno"
+          ],
+          "events": [
+            {
+              "title": "Mensaje recibido",
+              "desc": "Solicitud de cita"
+            },
+            {
+              "title": "Revisando agenda",
+              "desc": "Mañana 15:00 disponible"
+            }
+          ],
+          "bot": "¡Claro Carlos! Tengo libre mañana a las 15:00. ¿Pago en línea o presencial?",
+          "followChip": "Pago en línea",
+          "followUser": "Prefiero pagar en línea",
+          "followEvents": [
+            {
+              "title": "Cita agendada",
+              "desc": "Calendario sincronizado"
+            },
+            {
+              "title": "Recordatorio programado",
+              "desc": "WhatsApp 1 hora antes"
+            }
+          ],
+          "final": "¡Agendado! Te espero mañana a las 15:00. Te enviaré un recordatorio una hora antes ⏰",
+          "result": "Cita agendada"
+        },
+        "payment": {
+          "chip": "Confirmar un pago",
+          "user": "Acabo de pagar por QR. Aquí el comprobante.",
+          "keywords": [
+            "pago",
+            "pagar",
+            "qr",
+            "comprobante",
+            "pagué"
+          ],
+          "events": [
+            {
+              "title": "Comprobante recibido",
+              "desc": "Imagen procesada"
+            },
+            {
+              "title": "Verificando pago",
+              "desc": "Bs. 150 · QR bancario"
+            }
+          ],
+          "bot": "¡Gracias Ana! Estoy verificando tu pago de Bs. 150…",
+          "followChip": "Ver mi pedido",
+          "followUser": "¿Cómo va mi pedido?",
+          "followEvents": [
+            {
+              "title": "Pago verificado",
+              "desc": "Pedido #OPT-2041 confirmado"
+            },
+            {
+              "title": "Pedido en preparación",
+              "desc": "Cliente notificado"
+            }
+          ],
+          "final": "¡Pago verificado! Tu pedido #OPT-2041 ya está en preparación y te avisaremos cuando salga 📦",
+          "result": "Pago verificado"
+        }
+      }
+    },
     "metrics": {
       "responseTime": "Tiempo de respuesta",
       "availability": "Disponibilidad",
