@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import { Cpu, LayoutDashboard, Scissors, Sparkles } from 'lucide-react';
 import './WhatsAppDemo.css';
 
@@ -16,11 +18,23 @@ const barberiaFlow = {
     barbers: [{ title: 'Consultando equipo', desc: '3 barberos activos' }],
     barber_availability: [{ title: 'Revisando agenda', desc: 'Horarios libres de esta semana' }],
     payment: [{ title: 'Reserva creada', desc: 'Horario bloqueado 15 min' }],
-    qr_payment: [{ title: 'Generando QR', desc: 'Cobro bancario listo' }],
+    pay_method: [{ title: 'Calculando monto', desc: 'Bs. y equivalente en USDT/USDC' }],
+    qr_simple: [
+      { title: 'Generando QR Simple', desc: 'Interoperable con todos los bancos' },
+      { title: 'Cobro registrado', desc: 'QR válido por 15 min' },
+    ],
+    binance: [
+      { title: 'Creando orden Binance Pay', desc: 'Monto convertido a stablecoin' },
+      { title: 'QR Binance listo', desc: 'Sin comisión para el cliente' },
+    ],
     proof_request: [{ title: 'Esperando comprobante', desc: 'Pago pendiente de verificar' }],
     confirmed_location: [
       { title: 'Pago verificado', desc: 'Comprobante validado por IA' },
       { title: 'Cita confirmada', desc: 'Agenda actualizada' },
+    ],
+    onsite_confirmed: [
+      { title: 'Reserva confirmada', desc: 'Pago pendiente en tienda' },
+      { title: 'Agenda actualizada', desc: 'Cobro marcado para caja' },
     ],
     email_request: [{ title: 'Solicitando correo', desc: 'Para recordatorio y calendario' }],
     farewell: [
@@ -86,34 +100,59 @@ const barberiaFlow = {
       trigger: ['slot_lun9', 'slot_lun11', 'slot_mie14', 'slot_jue10', 'slot_vie15'],
       type: 'agent',
       customerText: '{ slotLabel }',
-      text: '*{ slotLabel }* reservado. ¿Cómo prefieres pagar?',
+      text: '*{ slotLabel }* reservado para *{ serviceLabel }*. ¿Cómo prefieres pagar?',
       options: [
-        { label: 'Adelantar 50% (Bs. { half })', value: 'pay_half' },
-        { label: 'Pagar total (Bs. { full })', value: 'pay_full' },
-        { label: 'Pagar en establecimiento', value: 'pay_onsite' },
+        { label: 'Pago completo (Bs. { full })', value: 'pay_full' },
+        { label: 'Adelanto 50% (Bs. { half })', value: 'pay_half' },
+        { label: 'Pagar en tienda', value: 'pay_onsite' },
       ],
     },
     {
-      id: 'qr_payment',
-      trigger: ['pay_half', 'pay_full'],
+      id: 'pay_method',
+      trigger: ['pay_full', 'pay_half'],
       type: 'agent',
-      customerText: '{ paymentLabel }',
-      text: '¡Perfecto! Escanea el código QR para completar tu pago.',
-      image: 'qr',
+      text: 'Monto a pagar: *Bs. { amount }* ({ payKind }).\n\n¿Con qué método quieres pagar?',
+      options: [
+        { label: 'QR Simple (cualquier banco)', value: 'qr_simple' },
+        { label: 'Binance Pay — USDT', value: 'binance_usdt' },
+        { label: 'Binance Pay — USDC', value: 'binance_usdc' },
+      ],
+    },
+    {
+      id: 'qr_simple',
+      trigger: 'qr_simple',
+      type: 'agent',
+      text: 'Escanea este *QR Simple* desde la app de tu banco o billetera. Cuando termines, avísame.',
+      payCard: 'qr_simple',
+      options: [{ label: 'Listo, ya pagué', value: 'paid' }],
+    },
+    {
+      id: 'binance',
+      trigger: ['binance_usdt', 'binance_usdc'],
+      type: 'agent',
+      text: 'Abre *Binance* → *Pay* → *Escanear* y paga *{ cryptoAmount } { coin }*. Cuando termines, avísame.',
+      payCard: 'binance',
+      options: [{ label: 'Listo, ya pagué', value: 'paid' }],
     },
     {
       id: 'proof_request',
-      trigger: 'qr_payment_sent',
+      trigger: 'paid',
       type: 'agent',
-      customerText: 'Listo, ya pagué',
-      text: 'Gracias por tu pago. ¿Puedes enviarnos el comprobante de la transacción?',
+      text: '¡Gracias! Envíame la captura del comprobante para verificar tu pago.',
+      options: [{ label: 'Enviar comprobante', value: 'proof_sent' }],
     },
     {
       id: 'confirmed_location',
       trigger: 'proof_sent',
       type: 'agent',
-      customerText: 'Aquí está mi comprobante',
-      text: '*¡Pago verificado!* Tu cita está confirmada. Te esperamos aquí.',
+      text: '*¡Pago verificado!* { paymentSummary }\n\nTu cita está confirmada. Te esperamos aquí.',
+      location: true,
+    },
+    {
+      id: 'onsite_confirmed',
+      trigger: 'pay_onsite',
+      type: 'agent',
+      text: '*¡Reserva confirmada!* Pagarás *Bs. { full }* al llegar, en efectivo, QR Simple o tarjeta.\n\nTe guardamos el horario con 10 min de tolerancia.',
       location: true,
     },
     {
@@ -292,7 +331,7 @@ const gestionFlow = {
       id: 'pagos_pend',
       trigger: 'pagos_pend',
       type: 'agent',
-      text: '*Pendientes de verificar*\n\n• Ana P. — Bs. 150 (QR)\n• Luis M. — Bs. 200 (transferencia)\n• Rosa T. — Bs. 130 (QR)\n\nPuedo validarlos con el comprobante que enviaron.',
+      text: '*Pendientes de verificar*\n\n• Ana P. — Bs. 150 (QR Simple)\n• Luis M. — 28.74 USDT (Binance Pay)\n• Rosa T. — Bs. 65 (adelanto, QR Simple)\n\nPuedo validarlos con el comprobante que enviaron.',
       options: [
         { label: 'Verificar todos', value: 'pagos_verif' },
         { label: 'Volver al menú', value: 'menu' },
@@ -419,13 +458,18 @@ const servicePriceMap = {
   pack_vip: { full: 280, label: 'Pack VIP Completo' },
 };
 
+// Tipo de cambio referencial Bs. → USDT/USDC para la demo
+const BOB_PER_USD = 6.96;
+const BINANCE_PAY_ID = '482913607';
+const BUSINESS_NAME = 'Barbería VIP SRL';
+
 const getTime = () => {
   const now = new Date();
   return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 };
 
 const normalize = (str) =>
-  str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  str.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 // Elige la opción cuyo texto comparte más palabras con lo que escribió el visitante
 function matchOption(text, options = []) {
@@ -446,6 +490,71 @@ function matchOption(text, options = []) {
 function resolveText(template, context) {
   return template.replace(/\{ (\w+) \}/g, (_, key) => context[key] ?? `{${key}}`);
 }
+
+const formatBs = (n) => Number(n).toLocaleString('es-BO', { maximumFractionDigits: 2 });
+
+// Actualiza el contexto de la conversación según la opción elegida
+function applyChoice(ctx, option) {
+  const next = { ...ctx };
+  const { value } = option;
+
+  if (servicePriceMap[value]) {
+    next.selectedService = value;
+    next.serviceLabel = servicePriceMap[value].label;
+  }
+
+  if (barberAvailabilityMap[value]) {
+    next.selectedBarber = value;
+    next.barberLabel = option.label;
+    next.barberAvailability = barberAvailabilityMap[value].text;
+  }
+
+  if (slotLabelMap[value]) {
+    next.slotLabel = slotLabelMap[value];
+    const svc = servicePriceMap[next.selectedService];
+    if (svc) {
+      next.full = svc.full;
+      next.half = Math.round(svc.full / 2);
+    }
+  }
+
+  if (value === 'pay_full' || value === 'pay_half') {
+    next.payType = value === 'pay_full' ? 'full' : 'half';
+    next.amount = value === 'pay_full' ? next.full : next.half;
+    next.payKind = value === 'pay_full' ? 'pago completo' : 'adelanto 50%';
+  }
+
+  if (value === 'pay_onsite') next.payType = 'onsite';
+
+  if (value === 'qr_simple' || value.startsWith('binance_')) {
+    next.payRef = `OPT-${Math.floor(100000 + Math.random() * 900000)}`;
+    if (value === 'qr_simple') {
+      next.method = 'QR Simple';
+      next.coin = null;
+    } else {
+      next.method = 'Binance Pay';
+      next.coin = value === 'binance_usdt' ? 'USDT' : 'USDC';
+      next.cryptoAmount = (next.amount / BOB_PER_USD).toFixed(2);
+    }
+  }
+
+  if (value === 'proof_sent') {
+    const paid = next.coin
+      ? `Recibimos *${next.cryptoAmount} ${next.coin}* (≈ Bs. ${formatBs(next.amount)}) vía Binance Pay.`
+      : `Recibimos *Bs. ${formatBs(next.amount)}* vía QR Simple.`;
+    const balance = next.payType === 'half'
+      ? `\nSaldo pendiente: *Bs. ${formatBs(next.full - next.amount)}*, a pagar en tienda.`
+      : '\nTu servicio quedó pagado al 100%.';
+    next.paymentSummary = paid + balance;
+  }
+
+  return next;
+}
+
+const findStepFor = (flow, value) =>
+  flow.steps.find((s) => (Array.isArray(s.trigger) ? s.trigger.includes(value) : s.trigger === value));
+
+const noop = () => {};
 
 /* ──────────────────── MAIN COMPONENT ──────────────────── */
 
@@ -520,6 +629,9 @@ const ActivityPanel = ({ events }) => {
       <div className="wa-try-card">
         <h3>Pruébalo tú mismo</h3>
         <p>Toca una opción o escribe tu mensaje como en WhatsApp.</p>
+        <Link to="/demo/whatsapp" className="wa-fullscreen-link">
+          <i className="fas fa-expand"></i> Ver en pantalla completa
+        </Link>
       </div>
 
       <div className="wa-activity-card">
@@ -548,204 +660,165 @@ const ActivityPanel = ({ events }) => {
   );
 };
 
-/* ──────────────────── PHONE MOCKUP ──────────────────── */
+/* ──────────────────── PAYMENT CARDS ──────────────────── */
 
-const PhoneMockup = ({ flow, onEvent }) => {
+const PayCard = ({ kind, ctx }) => {
+  if (kind === 'binance') {
+    return (
+      <div className="wa-pay-card binance">
+        <div className="wa-pay-head">
+          <i className="fas fa-coins"></i>
+          <span>Binance Pay</span>
+          <em>{ctx.coin}</em>
+        </div>
+        <div className="wa-pay-qr">
+          <QRCodeSVG
+            value={`BINANCEPAY|${BINANCE_PAY_ID}|${ctx.coin}|${ctx.cryptoAmount}|${ctx.payRef}`}
+            size={128}
+            level="M"
+          />
+        </div>
+        <div className="wa-pay-amount">{ctx.cryptoAmount} {ctx.coin}</div>
+        <div className="wa-pay-sub">≈ Bs. {formatBs(ctx.amount)} · T/C {BOB_PER_USD}</div>
+        <dl className="wa-pay-rows">
+          <dt>Pay ID</dt><dd>{BINANCE_PAY_ID}</dd>
+          <dt>Referencia</dt><dd>{ctx.payRef}</dd>
+          <dt>Comisión</dt><dd>Sin costo</dd>
+        </dl>
+      </div>
+    );
+  }
+
+  return (
+    <div className="wa-pay-card qr-simple">
+      <div className="wa-pay-head">
+        <i className="fas fa-qrcode"></i>
+        <span>QR Simple</span>
+        <em>BOB</em>
+      </div>
+      <div className="wa-pay-qr">
+        <QRCodeSVG
+          value={`QRSIMPLE|${BUSINESS_NAME}|BOB|${ctx.amount}|${ctx.payRef}`}
+          size={128}
+          level="M"
+        />
+      </div>
+      <div className="wa-pay-amount">Bs. {formatBs(ctx.amount)}</div>
+      <div className="wa-pay-sub">{ctx.payType === 'half' ? 'Adelanto 50%' : 'Pago completo'}</div>
+      <dl className="wa-pay-rows">
+        <dt>Beneficiario</dt><dd>{BUSINESS_NAME}</dd>
+        <dt>Referencia</dt><dd>{ctx.payRef}</dd>
+        <dt>Vence</dt><dd>en 15 min</dd>
+      </dl>
+      <small className="wa-pay-note">Válido para todos los bancos y billeteras de Bolivia</small>
+    </div>
+  );
+};
+
+/* ──────────────────── CHAT WINDOW ──────────────────── */
+
+const inputPlaceholders = {
+  email: 'tucorreo@ejemplo.com',
+  default: 'Escribe o elige una opción ↑',
+};
+
+const ChatWindow = ({ flow, onEvent, onBack, variant = 'phone' }) => {
   const [messages, setMessages] = useState([]);
-  const [currentStepId, setCurrentStepId] = useState('welcome');
   const [context, setContext] = useState({});
   const [waitingForInput, setWaitingForInput] = useState(false);
-  const [inputMode, setInputMode] = useState(null); // 'email' | 'proof'
+  const [inputMode, setInputMode] = useState(null); // 'email'
   const [typedInput, setTypedInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const chatRef = useRef(null);
-  const [clock, setClock] = useState(getTime);
+  const timers = useRef([]);
+  const nextMsgId = useRef(0);
 
-  useEffect(() => {
-    const tick = setInterval(() => setClock(getTime()), 30000);
-    return () => clearInterval(tick);
+  const later = useCallback((fn, ms) => {
+    timers.current.push(setTimeout(fn, ms));
   }, []);
 
-  const scrollToBottom = useCallback(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' });
-    }
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  useEffect(() => {
+    const el = chatRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+  }, [messages, isTyping]);
+
+  const addMessage = useCallback((msg) => {
+    const id = nextMsgId.current++;
+    setMessages((prev) => [...prev, { ...msg, time: getTime(), id }]);
   }, []);
 
-  useEffect(() => { scrollToBottom(); }, [messages, isTyping]);
-
-  // ── show initial agent message with a small delay ──
-  useEffect(() => {
-    setMessages([]);
-    setCurrentStepId('welcome');
-    setContext({});
-    setWaitingForInput(false);
-    setInputMode(null);
-    setTypedInput('');
-    setIsTyping(false);
-
-    const timer = setTimeout(() => {
-      const startStep = flow.steps.find(s => s.isStart);
-      if (startStep) showAgentStep(startStep, {});
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [flow]);
-
-  function showAgentStep(step, ctx) {
+  const showAgentStep = useCallback(function show(step, ctx) {
     setIsTyping(true);
     const stepEvents = flow.stepEvents?.[step.id] ?? [{ title: 'Respuesta generada', desc: 'Agente IA' }];
     stepEvents.forEach((ev, i) => onEvent(ev, i * 500));
     const delay = Math.min(1000, Math.max(650, step.text.length * 7));
-    setTimeout(() => {
+
+    later(() => {
       setIsTyping(false);
-      const text = resolveText(step.text, ctx);
-      addMessage({ type: 'agent', text, options: step.options, image: step.image, location: step.location });
+      addMessage({
+        type: 'agent',
+        text: resolveText(step.text, ctx),
+        options: step.options?.map((o) => ({ ...o, label: resolveText(o.label, ctx) })),
+        payCard: step.payCard,
+        ctx: step.payCard ? ctx : undefined,
+        location: step.location,
+      });
 
       if (step.options) {
-        setCurrentStepId(step.id);
         setWaitingForInput(true);
-      } else if (step.id === 'qr_payment') {
-        // After showing QR, wait for "I paid" confirmation
-        setCurrentStepId('qr_payment');
-        setWaitingForInput(true);
-        setInputMode('confirm_payment');
-      } else if (step.id === 'proof_request') {
-        setCurrentStepId('proof_request');
-        setWaitingForInput(true);
-        setInputMode('proof');
       } else if (step.id === 'email_request') {
-        setCurrentStepId('email_request');
         setWaitingForInput(true);
         setInputMode('email');
       } else if (step.location) {
-        // After location, trigger email request
-        setTimeout(() => {
-          const emailStep = flow.steps.find(s => s.id === 'email_request');
-          if (emailStep) showAgentStep(emailStep, ctx);
-        }, 1500);
-      } else if (step.isEnd) {
-        setWaitingForInput(false);
-        setInputMode(null);
+        const emailStep = flow.steps.find((s) => s.id === 'email_request');
+        if (emailStep) later(() => show(emailStep, ctx), 1500);
       }
     }, delay);
-  }
+  }, [flow, onEvent, later, addMessage]);
 
-  function addMessage(msg) {
-    setMessages(prev => [...prev, { ...msg, time: getTime(), id: Date.now() + Math.random() }]);
-  }
+  // Mensaje inicial del agente
+  useEffect(() => {
+    const startStep = flow.steps.find((s) => s.isStart);
+    if (startStep) later(() => showAgentStep(startStep, {}), 800);
+  }, [flow, later, showAgentStep]);
 
   function handleOptionClick(option, typedText) {
     if (!waitingForInput) return;
     setWaitingForInput(false);
 
-    // ── resolve customer text ──
-    let customerText = option.label;
-    const newCtx = { ...context };
-
-    // Persist service for price lookup
-    if (['corte_clasico', 'corte_barba', 'coloracion', 'tratamiento', 'pack_vip'].includes(option.value)) {
-      newCtx.selectedService = option.value;
-      newCtx.serviceLabel = option.label.replace(/^[\w\W]{2} /, '').split(' — ')[0];
-      customerText = option.label;
-    }
-
-    if (['carlos', 'diego', 'martin'].includes(option.value)) {
-      newCtx.selectedBarber = option.value;
-      newCtx.barberLabel = option.label;
-      const info = barberAvailabilityMap[option.value];
-      newCtx.barberAvailability = info.text;
-    }
-
-    if (Object.keys(slotLabelMap).includes(option.value)) {
-      const slotLabel = slotLabelMap[option.value];
-      newCtx.slotLabel = slotLabel;
-      const svc = servicePriceMap[newCtx.selectedService];
-      if (svc) {
-        newCtx.full = svc.full;
-        newCtx.half = Math.round(svc.full / 2);
-        newCtx.serviceLabel = svc.label.replace(/^[\w\W]{2} /, '').split(' — ')[0];
-      }
-    }
-
-    if (['pay_half', 'pay_full', 'pay_onsite'].includes(option.value)) {
-      newCtx.paymentLabel = option.label;
-    }
-
-    if (option.value === 'barbers') {
-      // Go back to barbers step
-      setContext(newCtx);
-      onEvent({ title: 'Mensaje recibido', desc: 'Ver otro barbero' });
-      addMessage({ type: 'customer', text: typedText ?? 'Ver otro barbero' });
-      const barberStep = flow.steps.find(s => s.id === 'barbers');
-      if (barberStep) {
-        setTimeout(() => showAgentStep(barberStep, newCtx), 600);
-      }
-      return;
-    }
-
+    const newCtx = applyChoice(context, option);
     setContext(newCtx);
-    onEvent({ title: 'Mensaje recibido', desc: customerText });
-    addMessage({ type: 'customer', text: typedText ?? customerText });
+    onEvent({ title: 'Mensaje recibido', desc: option.label });
 
-    // Find next step
-    const nextStep = flow.steps.find(s => {
-      if (!s.trigger) return false;
-      if (Array.isArray(s.trigger)) return s.trigger.includes(option.value);
-      return s.trigger === option.value;
-    });
-
-    if (nextStep) {
-      setTimeout(() => showAgentStep(nextStep, newCtx), 700);
-    } else if (option.value === 'pay_onsite') {
-      // Skip QR, go to proof request
-      setTimeout(() => {
-        const proofStep = flow.steps.find(s => s.id === 'proof_request');
-        if (proofStep) {
-          // For on-site, skip proof and go straight to location
-          const locStep = flow.steps.find(s => s.id === 'confirmed_location');
-          if (locStep) showAgentStep(locStep, newCtx);
-        }
-      }, 700);
+    if (option.value === 'proof_sent') {
+      addMessage({ type: 'customer', text: typedText ?? 'Aquí está mi comprobante', attachment: 'receipt' });
+    } else {
+      addMessage({ type: 'customer', text: typedText ?? option.label });
     }
+
+    const nextStep = option.value === 'barbers'
+      ? flow.steps.find((s) => s.id === 'barbers')
+      : findStepFor(flow, option.value);
+    if (nextStep) later(() => showAgentStep(nextStep, newCtx), 700);
   }
 
-  function handleSpecialInput() {
-    if (!typedInput.trim()) return;
-
-    if (inputMode === 'confirm_payment') {
-      const text = typedInput.trim();
-      setTypedInput('');
-      setWaitingForInput(false);
-      setInputMode(null);
-      addMessage({ type: 'customer', text });
-      const proofStep = flow.steps.find(s => s.id === 'proof_request');
-      if (proofStep) setTimeout(() => showAgentStep(proofStep, context), 700);
-      return;
-    }
-
-    if (inputMode === 'proof') {
-      const text = typedInput.trim();
-      setTypedInput('');
-      setWaitingForInput(false);
-      setInputMode(null);
-      addMessage({ type: 'customer', text });
-      const locStep = flow.steps.find(s => s.id === 'confirmed_location');
-      if (locStep) setTimeout(() => showAgentStep(locStep, context), 700);
-      return;
-    }
-
-    if (inputMode === 'email') {
-      const email = typedInput.trim();
-      setTypedInput('');
-      setWaitingForInput(false);
-      setInputMode(null);
-      const newCtx = { ...context, userEmail: email };
-      setContext(newCtx);
-      addMessage({ type: 'customer', text: email });
-      const farewellStep = flow.steps.find(s => s.id === 'farewell');
-      if (farewellStep) setTimeout(() => showAgentStep(farewellStep, newCtx), 700);
-    }
+  function handleEmailInput() {
+    const email = typedInput.trim();
+    if (!email) return;
+    setTypedInput('');
+    setWaitingForInput(false);
+    setInputMode(null);
+    const newCtx = { ...context, userEmail: email };
+    setContext(newCtx);
+    addMessage({ type: 'customer', text: email });
+    const farewellStep = flow.steps.find((s) => s.id === 'farewell');
+    if (farewellStep) later(() => showAgentStep(farewellStep, newCtx), 700);
   }
+
+  // Última burbuja con opciones: sólo esa acepta clics
+  const activeOptionsMsg = [...messages].reverse().find((m) => m.options);
 
   // Texto libre cuando el agente espera que se elija una opción
   function handleFreeText() {
@@ -753,8 +826,7 @@ const PhoneMockup = ({ flow, onEvent }) => {
     if (!text || !waitingForInput) return;
     setTypedInput('');
 
-    const lastOptions = [...messages].reverse().find((m) => m.options)?.options;
-    const match = matchOption(text, lastOptions);
+    const match = matchOption(text, activeOptionsMsg?.options);
     if (match) {
       handleOptionClick(match, text);
       return;
@@ -763,7 +835,7 @@ const PhoneMockup = ({ flow, onEvent }) => {
     addMessage({ type: 'customer', text });
     onEvent({ title: 'Mensaje recibido', desc: 'Sin coincidencia, pidiendo aclaración' });
     setIsTyping(true);
-    setTimeout(() => {
+    later(() => {
       setIsTyping(false);
       addMessage({
         type: 'agent',
@@ -772,12 +844,157 @@ const PhoneMockup = ({ flow, onEvent }) => {
     }, 900);
   }
 
-  const inputPlaceholders = {
-    confirm_payment: 'Escribe "Listo, ya pagué"…',
-    proof: 'Escribe el número de transacción…',
-    email: 'tucorreo@ejemplo.com',
-    default: 'Escribe o elige una opción ↑',
-  };
+  const submit = inputMode === 'email' ? handleEmailInput : handleFreeText;
+
+  return (
+    <div className={`wa-chat-window ${variant}`}>
+      {/* Header */}
+      <div className="whatsapp-header">
+        <button className="header-back" onClick={onBack} aria-label="Volver" disabled={!onBack}>
+          <i className={variant === 'full' ? 'fas fa-arrow-left' : 'fas fa-chevron-left'}></i>
+        </button>
+        <div className="wa-header-contact">
+          <div className="wa-contact-avatar">
+            <img src="/OPTUSLOGO.png" alt="Agent" />
+          </div>
+          <div className="wa-contact-info">
+            <div className="wa-contact-name">{flow.agentName}</div>
+            <div className="wa-contact-status">{isTyping ? 'escribiendo…' : flow.agentStatus}</div>
+          </div>
+        </div>
+        <div className="header-menu">
+          <i className="fas fa-video"></i>
+          <i className="fas fa-phone"></i>
+          {variant === 'full' && <i className="fas fa-ellipsis-vertical"></i>}
+        </div>
+      </div>
+
+      {/* Chat */}
+      <div className="whatsapp-chat-bg" ref={chatRef}>
+        <div className="chat-date-pill">Hoy</div>
+        {variant === 'full' && (
+          <div className="chat-e2e-pill">
+            <i className="fas fa-lock"></i> Los mensajes están cifrados de extremo a extremo.
+          </div>
+        )}
+
+        {messages.map((msg) => {
+          const optionsActive = waitingForInput && msg === activeOptionsMsg;
+          return (
+            <div key={msg.id} className={`chat-bubble-wrapper ${msg.type}`}>
+              <div className={`chat-bubble ${msg.type}`}>
+                {msg.attachment === 'receipt' && (
+                  <div className="wa-attachment">
+                    <div className="wa-attachment-thumb">
+                      <i className="fas fa-receipt"></i>
+                    </div>
+                    <div>
+                      <strong>comprobante.jpg</strong>
+                      <small>JPG · 184 KB</small>
+                    </div>
+                  </div>
+                )}
+
+                {msg.text && (
+                  <div
+                    className="bubble-text"
+                    dangerouslySetInnerHTML={{
+                      __html: msg.text
+                        .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
+                        .replace(/\n/g, '<br/>'),
+                    }}
+                  />
+                )}
+
+                {msg.payCard && <PayCard kind={msg.payCard} ctx={msg.ctx} />}
+
+                {msg.options && (
+                  <div className="bubble-options">
+                    {msg.options.map((opt, i) => (
+                      <button
+                        key={i}
+                        className={`bubble-option-btn ${!optionsActive ? 'used' : ''}`}
+                        onClick={() => handleOptionClick(opt)}
+                        disabled={!optionsActive}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {msg.location && (
+                  <div className="bubble-location">
+                    <div className="map-placeholder">
+                      <i className="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div className="location-info">
+                      <strong>Barbería VIP Central</strong>
+                      <span>Av. Principal #123, Santa Cruz</span>
+                    </div>
+                  </div>
+                )}
+
+                <span className="bubble-time">
+                  {msg.time}{' '}
+                  {msg.type === 'customer' && (
+                    <i className="fas fa-check-double read"></i>
+                  )}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+
+        {isTyping && (
+          <div className="chat-bubble-wrapper agent">
+            <div className="typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Input Bar */}
+      <div className="whatsapp-input-bar">
+        <i className="fas fa-plus text-gray"></i>
+        {inputMode || waitingForInput ? (
+          <input
+            className="input-box-active"
+            type={inputMode === 'email' ? 'email' : 'text'}
+            placeholder={inputPlaceholders[inputMode] || inputPlaceholders.default}
+            value={typedInput}
+            onChange={(e) => setTypedInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && submit()}
+          />
+        ) : (
+          <div className="input-box">
+            <span>{inputPlaceholders.default}</span>
+            <i className="far fa-face-smile text-gray"></i>
+          </div>
+        )}
+        <button
+          className="send-button"
+          onClick={submit}
+          disabled={!inputMode && !waitingForInput}
+          aria-label="Enviar"
+        >
+          <i className={`fas ${inputMode || waitingForInput ? 'fa-paper-plane' : 'fa-microphone'}`}></i>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ──────────────────── PHONE MOCKUP ──────────────────── */
+
+const PhoneMockup = ({ flow, onEvent }) => {
+  const [clock, setClock] = useState(getTime);
+
+  useEffect(() => {
+    const tick = setInterval(() => setClock(getTime()), 30000);
+    return () => clearInterval(tick);
+  }, []);
 
   return (
     <div className="phone-mockup-3d">
@@ -800,127 +1017,102 @@ const PhoneMockup = ({ flow, onEvent }) => {
             </div>
           </div>
 
-          {/* Header */}
-          <div className="whatsapp-header">
-            <div className="header-back">
-              <i className="fas fa-chevron-left"></i>
-            </div>
-            <div className="wa-header-contact">
-              <div className="wa-contact-avatar">
-                <img src="/OPTUSLOGO.png" alt="Agent" />
-              </div>
-              <div className="wa-contact-info">
-                <div className="wa-contact-name">{flow.agentName}</div>
-                <div className="wa-contact-status">{flow.agentStatus}</div>
-              </div>
-            </div>
-            <div className="header-menu">
-              <i className="fas fa-video"></i>
-              <i className="fas fa-phone"></i>
-            </div>
-          </div>
-
-          {/* Chat */}
-          <div className="whatsapp-chat-bg" ref={chatRef}>
-            <div className="chat-date-pill">Hoy</div>
-
-            {messages.map((msg) => (
-              <div key={msg.id} className={`chat-bubble-wrapper ${msg.type}`}>
-                <div className={`chat-bubble ${msg.type}`}>
-                  {msg.text && (
-                    <div
-                      className="bubble-text"
-                      dangerouslySetInnerHTML={{
-                        __html: msg.text
-                          .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
-                          .replace(/\n/g, '<br/>'),
-                      }}
-                    />
-                  )}
-
-                  {msg.options && (
-                    <div className="bubble-options">
-                      {msg.options.map((opt, i) => (
-                        <button
-                          key={i}
-                          className={`bubble-option-btn ${!waitingForInput ? 'used' : ''}`}
-                          onClick={() => handleOptionClick(opt)}
-                          disabled={!waitingForInput}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {msg.image === 'qr' && (
-                    <div className="bubble-image qr-image">
-                      <i className="fas fa-qrcode"></i>
-                      <span>Bs. {context.full || '—'}</span>
-                      <span className="qr-detail">Escanear para pagar</span>
-                    </div>
-                  )}
-
-                  {msg.location && (
-                    <div className="bubble-location">
-                      <div className="map-placeholder">
-                        <i className="fas fa-map-marker-alt"></i>
-                      </div>
-                      <div className="location-info">
-                        <strong>Barbería VIP Central</strong>
-                        <span>Av. Principal #123, Santa Cruz</span>
-                      </div>
-                    </div>
-                  )}
-
-                  <span className="bubble-time">
-                    {msg.time}{' '}
-                    {msg.type === 'customer' && (
-                      <i className="fas fa-check-double read"></i>
-                    )}
-                  </span>
-                </div>
-              </div>
-            ))}
-
-            {isTyping && (
-              <div className="chat-bubble-wrapper agent">
-                <div className="typing-indicator">
-                  <span></span><span></span><span></span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Input Bar */}
-          <div className="whatsapp-input-bar">
-            <i className="fas fa-plus text-gray"></i>
-            {inputMode || waitingForInput ? (
-              <input
-                className="input-box-active"
-                type={inputMode === 'email' ? 'email' : 'text'}
-                placeholder={inputPlaceholders[inputMode] || inputPlaceholders.default}
-                value={typedInput}
-                onChange={(e) => setTypedInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (inputMode ? handleSpecialInput() : handleFreeText())}
-              />
-            ) : (
-              <div className="input-box">
-                <span>{inputPlaceholders.default}</span>
-                <i className="far fa-face-smile text-gray"></i>
-              </div>
-            )}
-            <button
-              className="send-button"
-              onClick={inputMode ? handleSpecialInput : handleFreeText}
-              disabled={!inputMode && !waitingForInput}
-              aria-label="Enviar"
-            >
-              <i className={`fas ${inputMode || waitingForInput ? 'fa-paper-plane' : 'fa-microphone'}`}></i>
-            </button>
-          </div>
+          <ChatWindow flow={flow} onEvent={onEvent} />
 
           <div className="home-indicator"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ──────────────────── FULLSCREEN (WhatsApp simulado) ──────────────────── */
+
+const previewText = (flow) =>
+  flow.steps.find((s) => s.isStart)?.text.replace(/\*/g, '') ?? '';
+
+export const WhatsAppFullscreen = () => {
+  const [active, setActive] = useState(0);
+  const [view, setView] = useState('chat'); // en móvil: 'list' | 'chat'
+  const [query, setQuery] = useState('');
+
+  const visible = FLOWS
+    .map((f, i) => ({ f, i }))
+    .filter(({ f }) => normalize(`${f.agentName} ${f.label}`).includes(normalize(query)));
+
+  function openChat(i) {
+    setActive(i);
+    setView('chat');
+  }
+
+  return (
+    <div className={`wa-full view-${view}`}>
+      <div className="wa-full-app">
+        {/* Lista de chats */}
+        <aside className="wa-full-sidebar">
+          <div className="wa-full-sidebar-head">
+            <div className="wa-full-me">
+              <img src="/OPTUSLOGO.png" alt="OPTUS" />
+              <strong>Chats</strong>
+            </div>
+            <div className="wa-full-head-actions">
+              <i className="fas fa-camera"></i>
+              <Link to="/" aria-label="Salir de la demo" title="Salir de la demo">
+                <i className="fas fa-xmark"></i>
+              </Link>
+            </div>
+          </div>
+
+          <div className="wa-full-search">
+            <i className="fas fa-magnifying-glass"></i>
+            <input
+              type="text"
+              placeholder="Buscar un chat"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+
+          <ul className="wa-full-chats">
+            {visible.map(({ f, i }) => {
+              const Icon = f.icon;
+              return (
+                <li key={f.label}>
+                  <button
+                    className={`wa-full-chat ${i === active ? 'active' : ''}`}
+                    onClick={() => openChat(i)}
+                  >
+                    <span className="wa-full-chat-avatar">
+                      <Icon aria-hidden="true" />
+                    </span>
+                    <span className="wa-full-chat-body">
+                      <span className="wa-full-chat-top">
+                        <strong>{f.agentName}</strong>
+                        <small>{getTime()}</small>
+                      </span>
+                      <span className="wa-full-chat-preview">{previewText(f)}</span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+            {visible.length === 0 && <li className="wa-full-empty">Sin resultados</li>}
+          </ul>
+
+          <p className="wa-full-footnote">
+            <i className="fas fa-lock"></i> Demo interactiva de OPTUS · datos simulados
+          </p>
+        </aside>
+
+        {/* Conversación */}
+        <div className="wa-full-main">
+          <ChatWindow
+            key={active}
+            flow={FLOWS[active]}
+            onEvent={noop}
+            onBack={() => setView('list')}
+            variant="full"
+          />
         </div>
       </div>
     </div>

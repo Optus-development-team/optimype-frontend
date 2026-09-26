@@ -21,6 +21,7 @@ import Eliminar from './pages/Eliminar';
 import Pago from './pages/Pago';
 import Dashboard from './pages/Dashboard';
 import Demo from './pages/Demo';
+import WhatsAppDemoPage from './pages/WhatsAppDemoPage';
 import Introductions from './pages/Introductions';
 import './styles/variables.css';
 import './styles/global.css';
@@ -31,7 +32,7 @@ function AppContent() {
   const isLogPage = location.pathname === '/log';
   const isPagoPage = location.pathname.startsWith('/pago');
   const isDashboardPage = location.pathname === '/dashboard';
-  const isDemoPage = location.pathname === '/demo';
+  const isDemoPage = location.pathname === '/demo' || location.pathname.startsWith('/demo/');
   const isIntroductionsPage = location.pathname === '/introductions';
   const showPublicLayout = !isLoginPage && !isLogPage && !isPagoPage && !isDashboardPage && !isDemoPage && !isIntroductionsPage;
 
@@ -60,6 +61,7 @@ function AppContent() {
           <Route path="/pago/:codigoOrden" element={<Pago />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/demo" element={<Demo />} />
+          <Route path="/demo/whatsapp" element={<WhatsAppDemoPage />} />
           <Route path="/introductions" element={<Introductions />} />
         </Routes>
       </main>
