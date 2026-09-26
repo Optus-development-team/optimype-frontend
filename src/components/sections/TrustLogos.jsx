@@ -2,7 +2,6 @@
 
 const TrustLogos = () => {
   const logos = [
-    { src: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg", alt: "OpenAI" },
     { src: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg", alt: "Microsoft" },
     { src: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", alt: "Google" },
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg", alt: "Supabase" },
@@ -18,7 +17,7 @@ const TrustLogos = () => {
               key={`logo-1-${index}`}
               src={logo.src} 
               alt={logo.alt} 
-              className="company-logo" 
+              className={logo.className ? `company-logo ${logo.className}` : "company-logo"} 
             />
           ))}
           {logos.map((logo, index) => (
@@ -26,7 +25,7 @@ const TrustLogos = () => {
               key={`logo-2-${index}`}
               src={logo.src} 
               alt={logo.alt} 
-              className="company-logo" 
+              className={logo.className ? `company-logo ${logo.className}` : "company-logo"} 
             />
           ))}
           {logos.map((logo, index) => (
@@ -34,7 +33,7 @@ const TrustLogos = () => {
               key={`logo-3-${index}`}
               src={logo.src} 
               alt={logo.alt} 
-              className="company-logo" 
+              className={logo.className ? `company-logo ${logo.className}` : "company-logo"} 
             />
           ))}
         </div>

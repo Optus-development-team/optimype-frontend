@@ -1,4 +1,4 @@
-﻿import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { PrivyProvider } from '@privy-io/react-auth';
 import AOS from 'aos';
@@ -58,7 +58,7 @@ function AppContent() {
           <Route path="/eliminar" element={<Eliminar />} />
           <Route path="/pago" element={<Pago />} />
           <Route path="/pago/:codigoOrden" element={<Pago />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/introductions" element={<Introductions />} />
         </Routes>

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import PhoneDemo from './PhoneDemo';
+import WhatsAppDemo from './WhatsAppDemo';
 import './WhyOptus.css';
 
 const WhyOptus = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const metrics = [
     { value: '3 seg', label: t('whyOptus.metrics.responseTime'), icon: 'fas fa-bolt' },
@@ -46,7 +46,7 @@ const WhyOptus = () => {
           </p>
 
           <div className="demo-container" data-aos="zoom-in" data-aos-delay="200">
-            <PhoneDemo key={i18n.language} />
+            <WhatsAppDemo />
           </div>
 
           {/* Metrics */}

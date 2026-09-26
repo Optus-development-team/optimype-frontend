@@ -137,7 +137,7 @@ export const DashboardHeader = ({ products = [], productsLoading = false }) => {
               width: '3.5rem',
               height: '3.5rem',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #06B6D4 0%, #002B5B 100%)',
+              background: 'linear-gradient(135deg, #06B6D4 0%, #06B6D4 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

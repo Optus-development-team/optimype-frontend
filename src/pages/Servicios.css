@@ -70,7 +70,7 @@
 .servicio-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--color-accent), #4A90E2);
+  background: #06B6D4;
   border-radius: 16px;
   display: flex;
   align-items: center;
