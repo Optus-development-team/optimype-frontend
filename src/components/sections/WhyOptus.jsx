@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import WhatsAppDemo from './WhatsAppDemo';
 import './WhyOptus.css';
 
 const WhyOptus = () => {
@@ -87,63 +88,7 @@ const WhyOptus = () => {
           </p>
 
           <div className="demo-container" data-aos="zoom-in" data-aos-delay="200">
-            <div className="chat-simulation">
-              <div className="chat-header">
-                <div className="chat-status">
-                  <span className="status-dot"></span>
-                  <span>OPTUS IA activo</span>
-                </div>
-                <div className="chat-time">{liveDemo[activeDemo].time}</div>
-              </div>
-
-              <div className="chat-messages">
-                <div className="message customer-message">
-                  <div className="message-avatar">
-                    <i className="fas fa-user"></i>
-                  </div>
-                  <div className="message-content">
-                    <div className="message-name">{liveDemo[activeDemo].customer}</div>
-                    <div className="message-bubble customer">
-                      {liveDemo[activeDemo].message}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-
-                <div className="message agent-message">
-                  <div className="message-avatar bot">
-                    <i className="fas fa-robot"></i>
-                  </div>
-                  <div className="message-content">
-                    <div className="message-name">{liveDemo[activeDemo].agent}</div>
-                    <div className="message-bubble agent" style={{ borderColor: liveDemo[activeDemo].color }}>
-                      {liveDemo[activeDemo].response}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="chat-action" style={{ backgroundColor: liveDemo[activeDemo].color }}>
-                <i className="fas fa-check-circle"></i>
-                {liveDemo[activeDemo].action}
-              </div>
-            </div>
-
-            <div className="demo-indicators">
-              {liveDemo.map((_, index) => (
-                <button
-                  key={index}
-                  className={`indicator ${index === activeDemo ? 'active' : ''}`}
-                  onClick={() => setActiveDemo(index)}
-                  style={{ backgroundColor: index === activeDemo ? liveDemo[index].color : '#ddd' }}
-                />
-              ))}
-            </div>
+            <WhatsAppDemo />
           </div>
 
           {/* Metrics */}

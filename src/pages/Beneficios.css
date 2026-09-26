@@ -195,7 +195,7 @@
 .comparison-header {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr 1.5fr;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: #06B6D4;
   color: var(--color-white);
   font-weight: 700;
   font-size: 1.1rem;
@@ -333,7 +333,7 @@
 
 .chart-bar {
   flex: 1;
-  background: linear-gradient(to top, var(--color-primary), var(--color-accent));
+  background: #06B6D4;
   border-radius: 12px 12px 0 0;
   position: relative;
   display: flex;
@@ -351,7 +351,7 @@
 }
 
 .chart-bar.success {
-  background: linear-gradient(to top, #28a745, #20c997);
+  background: linear-gradient(to top, #28a745, #57bf5e);
 }
 
 .bar-label {

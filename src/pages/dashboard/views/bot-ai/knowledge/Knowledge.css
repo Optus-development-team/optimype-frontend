@@ -1,0 +1,239 @@
+.knowledge-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: var(--color-gray-light);
+  min-height: 100%;
+}
+
+.knowledge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.knowledge-content {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+}
+
+.bot-status-card {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid var(--color-gray-medium);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.bot-avatar {
+  width: 64px;
+  height: 64px;
+  background-color: #e0f2fe;
+  color: var(--color-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.bot-status-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.status-badge.active {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.bot-stats {
+  font-size: 0.9rem;
+  color: var(--color-gray-dark);
+}
+
+.w-full {
+  width: 100%;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.knowledge-main {
+  background-color: white;
+  border-radius: 1rem;
+  border: 1px solid var(--color-gray-medium);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-gray-light);
+  background-color: #f8fafc;
+}
+
+.search-icon {
+  color: var(--color-gray-dark);
+  margin-right: 0.75rem;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  outline: none;
+}
+
+.entries-table-wrapper {
+  overflow-x: auto;
+}
+
+.entries-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.entries-table th,
+.entries-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.entries-table th {
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #f8fafc;
+}
+
+.status-icon.active { color: #16a34a; }
+.status-icon.inactive { color: #94a3b8; }
+
+.entry-intent {
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.entry-question {
+  font-size: 0.85rem;
+  color: var(--color-gray-dark);
+}
+
+.entry-answer {
+  font-size: 0.9rem;
+  color: var(--color-gray-dark);
+  line-height: 1.4;
+  max-width: 400px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  padding: 0.4rem;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--color-gray-dark);
+}
+
+.action-btn:hover {
+  background-color: var(--color-gray-light);
+  color: var(--color-primary);
+}
+
+.action-btn.delete:hover {
+  color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.no-results {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-gray-dark);
+}
+
+/* Dark Theme */
+body.dark-theme .knowledge-container {
+  background-color: #0a1628;
+}
+
+body.dark-theme .bot-status-card,
+body.dark-theme .knowledge-main {
+  background-color: #1a2f4a;
+  border-color: #1e293b;
+}
+
+body.dark-theme .search-bar {
+  background-color: #0f172a;
+  border-color: #1e293b;
+}
+
+body.dark-theme .search-bar input {
+  color: var(--color-white);
+}
+
+body.dark-theme .entries-table th {
+  background-color: #0f172a;
+  color: #94a3b8;
+  border-color: #1e293b;
+}
+
+body.dark-theme .entries-table td {
+  border-color: #1e293b;
+}
+
+body.dark-theme .entry-intent,
+body.dark-theme .bot-status-card h3 {
+  color: var(--color-white);
+}
+
+body.dark-theme .entry-question,
+body.dark-theme .entry-answer,
+body.dark-theme .bot-stats {
+  color: #cbd5e1;
+}
+
+@media (max-width: 1024px) {
+  .knowledge-content {
+    grid-template-columns: 1fr;
+  }
+}
