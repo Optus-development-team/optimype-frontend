@@ -10,6 +10,24 @@ const barberiaFlow = {
   icon: Scissors,
   agentName: 'Barbería - VIP',
   agentStatus: 'en línea',
+  stepEvents: {
+    welcome: [{ title: 'Agente conectado', desc: 'WhatsApp Business activo' }],
+    services: [{ title: 'Consultando catálogo', desc: '5 servicios disponibles' }],
+    barbers: [{ title: 'Consultando equipo', desc: '3 barberos activos' }],
+    barber_availability: [{ title: 'Revisando agenda', desc: 'Horarios libres de esta semana' }],
+    payment: [{ title: 'Reserva creada', desc: 'Horario bloqueado 15 min' }],
+    qr_payment: [{ title: 'Generando QR', desc: 'Cobro bancario listo' }],
+    proof_request: [{ title: 'Esperando comprobante', desc: 'Pago pendiente de verificar' }],
+    confirmed_location: [
+      { title: 'Pago verificado', desc: 'Comprobante validado por IA' },
+      { title: 'Cita confirmada', desc: 'Agenda actualizada' },
+    ],
+    email_request: [{ title: 'Solicitando correo', desc: 'Para recordatorio y calendario' }],
+    farewell: [
+      { title: 'Google Calendar', desc: 'Invitación enviada' },
+      { title: 'Recordatorio programado', desc: 'WhatsApp 2 hrs antes' },
+    ],
+  },
   steps: [
     {
       id: 'welcome',
@@ -233,6 +251,30 @@ const servicePriceMap = {
   pack_vip: { full: 280, label: 'Pack VIP Completo' },
 };
 
+const getTime = () => {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+};
+
+const normalize = (str) =>
+  str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+// Elige la opción cuyo texto comparte más palabras con lo que escribió el visitante
+function matchOption(text, options = []) {
+  const words = normalize(text).split(/\W+/).filter((w) => w.length > 2);
+  let best = null;
+  let bestScore = 0;
+  options.forEach((opt) => {
+    const label = normalize(opt.label);
+    const score = words.filter((w) => label.includes(w)).length;
+    if (score > bestScore) {
+      best = opt;
+      bestScore = score;
+    }
+  });
+  return best;
+}
+
 function resolveText(template, context) {
   return template.replace(/\{ (\w+) \}/g, (_, key) => context[key] ?? `{${key}}`);
 }
@@ -264,15 +306,83 @@ const WhatsAppDemo = () => {
         })}
       </div>
 
-      {/* Phone */}
-      <PhoneMockup key={activeTab} flow={flow} />
+      <DemoStage key={activeTab} flow={flow} />
+    </div>
+  );
+};
+
+/* Teléfono + panel de actividad; se reinicia al cambiar de industria */
+const DemoStage = ({ flow }) => {
+  const [events, setEvents] = useState([]);
+  const timers = useRef([]);
+  const nextId = useRef(0);
+
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  const addEvent = useCallback(({ title, desc }, delay = 0) => {
+    const id = nextId.current++;
+    const start = setTimeout(() => {
+      setEvents((prev) => [...prev, { id, title, desc, status: 'processing' }]);
+      const finish = setTimeout(() => {
+        setEvents((prev) => prev.map((e) => (e.id === id ? { ...e, status: 'done' } : e)));
+      }, 900);
+      timers.current.push(finish);
+    }, delay);
+    timers.current.push(start);
+  }, []);
+
+  return (
+    <div className="wa-demo-stage">
+      <PhoneMockup flow={flow} onEvent={addEvent} />
+      <ActivityPanel events={events} />
+    </div>
+  );
+};
+
+const ActivityPanel = ({ events }) => {
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    const el = listRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+  }, [events]);
+
+  return (
+    <div className="wa-demo-side">
+      <div className="wa-try-card">
+        <h3>Pruébalo tú mismo</h3>
+        <p>Toca una opción o escribe como si fueras un cliente.</p>
+      </div>
+
+      <div className="wa-activity-card">
+        <div className="wa-activity-head">
+          <strong>Actividad del sistema</strong>
+          <span className="wa-activity-live">
+            <span className="wa-live-dot"></span> en vivo
+          </span>
+        </div>
+        <div className="wa-activity-list" ref={listRef}>
+          {events.length === 0 && <small className="wa-activity-empty">Esperando actividad…</small>}
+          {events.map((ev) => (
+            <div key={ev.id} className={`wa-activity-item ${ev.status}`}>
+              <span className="wa-activity-icon">
+                <i className={ev.status === 'processing' ? 'fas fa-spinner fa-spin' : 'fas fa-check'}></i>
+              </span>
+              <div>
+                <strong>{ev.title}</strong>
+                <small>{ev.desc}</small>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
 /* ──────────────────── PHONE MOCKUP ──────────────────── */
 
-const PhoneMockup = ({ flow }) => {
+const PhoneMockup = ({ flow, onEvent }) => {
   const [messages, setMessages] = useState([]);
   const [currentStepId, setCurrentStepId] = useState('welcome');
   const [context, setContext] = useState({});
@@ -281,6 +391,12 @@ const PhoneMockup = ({ flow }) => {
   const [typedInput, setTypedInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const chatRef = useRef(null);
+  const [clock, setClock] = useState(getTime);
+
+  useEffect(() => {
+    const tick = setInterval(() => setClock(getTime()), 30000);
+    return () => clearInterval(tick);
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     if (chatRef.current) {
@@ -309,6 +425,8 @@ const PhoneMockup = ({ flow }) => {
 
   function showAgentStep(step, ctx) {
     setIsTyping(true);
+    const stepEvents = flow.stepEvents?.[step.id] ?? [{ title: 'Respuesta generada', desc: 'Agente IA' }];
+    stepEvents.forEach((ev, i) => onEvent(ev, i * 500));
     const delay = Math.min(1000, Math.max(650, step.text.length * 7));
     setTimeout(() => {
       setIsTyping(false);
@@ -345,10 +463,10 @@ const PhoneMockup = ({ flow }) => {
   }
 
   function addMessage(msg) {
-    setMessages(prev => [...prev, { ...msg, id: Date.now() + Math.random() }]);
+    setMessages(prev => [...prev, { ...msg, time: getTime(), id: Date.now() + Math.random() }]);
   }
 
-  function handleOptionClick(option) {
+  function handleOptionClick(option, typedText) {
     if (!waitingForInput) return;
     setWaitingForInput(false);
 
@@ -388,7 +506,8 @@ const PhoneMockup = ({ flow }) => {
     if (option.value === 'barbers') {
       // Go back to barbers step
       setContext(newCtx);
-      addMessage({ type: 'customer', text: 'Ver otro barbero', id: Date.now() });
+      onEvent({ title: 'Mensaje recibido', desc: 'Ver otro barbero' });
+      addMessage({ type: 'customer', text: typedText ?? 'Ver otro barbero' });
       const barberStep = flow.steps.find(s => s.id === 'barbers');
       if (barberStep) {
         setTimeout(() => showAgentStep(barberStep, newCtx), 600);
@@ -397,7 +516,8 @@ const PhoneMockup = ({ flow }) => {
     }
 
     setContext(newCtx);
-    addMessage({ type: 'customer', text: customerText, id: Date.now() });
+    onEvent({ title: 'Mensaje recibido', desc: customerText });
+    addMessage({ type: 'customer', text: typedText ?? customerText });
 
     // Find next step
     const nextStep = flow.steps.find(s => {
@@ -429,7 +549,7 @@ const PhoneMockup = ({ flow }) => {
       setTypedInput('');
       setWaitingForInput(false);
       setInputMode(null);
-      addMessage({ type: 'customer', text, id: Date.now() });
+      addMessage({ type: 'customer', text });
       const proofStep = flow.steps.find(s => s.id === 'proof_request');
       if (proofStep) setTimeout(() => showAgentStep(proofStep, context), 700);
       return;
@@ -440,7 +560,7 @@ const PhoneMockup = ({ flow }) => {
       setTypedInput('');
       setWaitingForInput(false);
       setInputMode(null);
-      addMessage({ type: 'customer', text, id: Date.now() });
+      addMessage({ type: 'customer', text });
       const locStep = flow.steps.find(s => s.id === 'confirmed_location');
       if (locStep) setTimeout(() => showAgentStep(locStep, context), 700);
       return;
@@ -453,17 +573,42 @@ const PhoneMockup = ({ flow }) => {
       setInputMode(null);
       const newCtx = { ...context, userEmail: email };
       setContext(newCtx);
-      addMessage({ type: 'customer', text: email, id: Date.now() });
+      addMessage({ type: 'customer', text: email });
       const farewellStep = flow.steps.find(s => s.id === 'farewell');
       if (farewellStep) setTimeout(() => showAgentStep(farewellStep, newCtx), 700);
     }
+  }
+
+  // Texto libre cuando el agente espera que se elija una opción
+  function handleFreeText() {
+    const text = typedInput.trim();
+    if (!text || !waitingForInput) return;
+    setTypedInput('');
+
+    const lastOptions = [...messages].reverse().find((m) => m.options)?.options;
+    const match = matchOption(text, lastOptions);
+    if (match) {
+      handleOptionClick(match, text);
+      return;
+    }
+
+    addMessage({ type: 'customer', text });
+    onEvent({ title: 'Mensaje recibido', desc: 'Sin coincidencia, pidiendo aclaración' });
+    setIsTyping(true);
+    setTimeout(() => {
+      setIsTyping(false);
+      addMessage({
+        type: 'agent',
+        text: 'No estoy seguro de haberte entendido 🤔 Elige una de las opciones o escribe con otras palabras.',
+      });
+    }, 900);
   }
 
   const inputPlaceholders = {
     confirm_payment: 'Escribe "Listo, ya pagué"…',
     proof: 'Escribe el número de transacción…',
     email: 'tucorreo@ejemplo.com',
-    default: 'Selecciona una opción ↑',
+    default: 'Escribe o elige una opción ↑',
   };
 
   return (
@@ -479,7 +624,7 @@ const PhoneMockup = ({ flow }) => {
 
           {/* Status Bar */}
           <div className="whatsapp-status-bar">
-            <span className="status-time">14:28</span>
+            <span className="status-time">{clock}</span>
             <div className="status-icons">
               <i className="fas fa-signal"></i>
               <i className="fas fa-wifi"></i>
@@ -561,7 +706,7 @@ const PhoneMockup = ({ flow }) => {
                   )}
 
                   <span className="bubble-time">
-                    14:28{' '}
+                    {msg.time}{' '}
                     {msg.type === 'customer' && (
                       <i className="fas fa-check-double read"></i>
                     )}
@@ -582,14 +727,14 @@ const PhoneMockup = ({ flow }) => {
           {/* Input Bar */}
           <div className="whatsapp-input-bar">
             <i className="fas fa-plus text-gray"></i>
-            {inputMode ? (
+            {inputMode || waitingForInput ? (
               <input
                 className="input-box-active"
                 type={inputMode === 'email' ? 'email' : 'text'}
                 placeholder={inputPlaceholders[inputMode] || inputPlaceholders.default}
                 value={typedInput}
                 onChange={(e) => setTypedInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSpecialInput()}
+                onKeyDown={(e) => e.key === 'Enter' && (inputMode ? handleSpecialInput() : handleFreeText())}
               />
             ) : (
               <div className="input-box">
@@ -599,10 +744,11 @@ const PhoneMockup = ({ flow }) => {
             )}
             <button
               className="send-button"
-              onClick={inputMode ? handleSpecialInput : undefined}
-              disabled={!inputMode}
+              onClick={inputMode ? handleSpecialInput : handleFreeText}
+              disabled={!inputMode && !waitingForInput}
+              aria-label="Enviar"
             >
-              <i className={`fas ${inputMode ? 'fa-paper-plane' : 'fa-microphone'}`}></i>
+              <i className={`fas ${inputMode || waitingForInput ? 'fa-paper-plane' : 'fa-microphone'}`}></i>
             </button>
           </div>
 
