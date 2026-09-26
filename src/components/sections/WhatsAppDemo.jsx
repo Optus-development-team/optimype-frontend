@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Cpu, Scissors, Sparkles } from 'lucide-react';
+import { Cpu, LayoutDashboard, Scissors, Sparkles } from 'lucide-react';
 import './WhatsAppDemo.css';
 
 /* ─────────────── INDUSTRY FLOWS ─────────────── */
@@ -218,6 +218,174 @@ const techFlow = {
   ],
 };
 
+const MENU_OPTIONS = [
+        { label: 'Pagos', value: 'pagos' },
+        { label: 'Notificaciones', value: 'notificaciones' },
+        { label: 'Reportes', value: 'reportes' },
+        { label: 'KPIs', value: 'kpis' },
+      ];
+
+/* ── GESTIÓN DEL NEGOCIO FLOW (pagos, notificaciones, reportes, KPIs) ── */
+const gestionFlow = {
+  label: 'Gestión',
+  icon: LayoutDashboard,
+  agentName: 'OPTUS Admin',
+  agentStatus: 'en línea',
+  stepEvents: {
+    welcome: [{ title: 'Agente conectado', desc: 'Panel de gestión activo' }],
+    menu: [{ title: 'Menú principal', desc: 'Esperando selección' }],
+    pagos: [
+      { title: 'Consultando pagos', desc: 'Movimientos del día' },
+      { title: 'Conciliación bancaria', desc: '18 movimientos revisados' },
+    ],
+    pagos_pend: [{ title: 'Buscando pendientes', desc: '3 comprobantes por validar' }],
+    pagos_verif: [
+      { title: 'Verificando comprobantes', desc: 'IA + banco' },
+      { title: 'Clientes notificados', desc: '3 mensajes de WhatsApp' },
+    ],
+    notif: [{ title: 'Consultando automatizaciones', desc: '3 notificaciones activas' }],
+    notif_send: [
+      { title: 'Preparando mensajes', desc: '8 clientes con cita mañana' },
+      { title: 'Enviando por WhatsApp', desc: 'Recordatorios entregados' },
+    ],
+    reportes: [{ title: 'Catálogo de reportes', desc: '2 reportes disponibles' }],
+    rep_ventas: [{ title: 'Generando reporte', desc: 'Ventas de la semana' }],
+    rep_citas: [{ title: 'Generando reporte', desc: 'Citas del mes' }],
+    rep_mail: [
+      { title: 'Creando PDF', desc: 'Reporte con gráficos' },
+      { title: 'Enviando por correo', desc: 'Entrega confirmada' },
+    ],
+    kpis: [
+      { title: 'Calculando KPIs', desc: 'Ventas, conversión y respuesta' },
+      { title: 'Comparando con el mes anterior', desc: 'Tendencias listas' },
+    ],
+    kpi_canal: [{ title: 'Agrupando por canal', desc: 'WhatsApp, Instagram y Web' }],
+  },
+  steps: [
+    {
+      id: 'welcome',
+      type: 'agent',
+      text: '¡Hola! Soy *OPTUS Admin*, tu asistente de gestión. ¿Qué quieres revisar hoy?',
+      options: MENU_OPTIONS,
+      isStart: true,
+    },
+    {
+      id: 'menu',
+      trigger: 'menu',
+      type: 'agent',
+      text: '¿Qué más quieres revisar?',
+      options: MENU_OPTIONS,
+    },
+
+    /* Pagos */
+    {
+      id: 'pagos',
+      trigger: 'pagos',
+      type: 'agent',
+      text: '*Resumen de pagos de hoy*\n\n✅ 14 verificados — Bs. 2.350\n⏳ 3 pendientes — Bs. 480\n❌ 1 rechazado — Bs. 120',
+      options: [
+        { label: 'Ver pendientes', value: 'pagos_pend' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'pagos_pend',
+      trigger: 'pagos_pend',
+      type: 'agent',
+      text: '*Pendientes de verificar*\n\n• Ana P. — Bs. 150 (QR)\n• Luis M. — Bs. 200 (transferencia)\n• Rosa T. — Bs. 130 (QR)\n\nPuedo validarlos con el comprobante que enviaron.',
+      options: [
+        { label: 'Verificar todos', value: 'pagos_verif' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'pagos_verif',
+      trigger: 'pagos_verif',
+      type: 'agent',
+      text: '*¡Listo!* Los 3 pagos quedaron verificados y cada cliente ya recibió su confirmación por WhatsApp.',
+      options: [{ label: 'Volver al menú', value: 'menu' }],
+    },
+
+    /* Notificaciones */
+    {
+      id: 'notif',
+      trigger: 'notificaciones',
+      type: 'agent',
+      text: '*Notificaciones automáticas activas*\n\n🔔 Recordatorio de cita — 2 hrs antes\n💳 Aviso de pago pendiente — a las 24 hrs\n📦 Pedido listo para recoger\n\n¿Qué quieres hacer?',
+      options: [
+        { label: 'Enviar recordatorios ahora', value: 'notif_send' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'notif_send',
+      trigger: 'notif_send',
+      type: 'agent',
+      text: '*Recordatorios enviados* a 8 clientes con cita mañana. Tasa de lectura estimada: 96%.',
+      options: [{ label: 'Volver al menú', value: 'menu' }],
+    },
+
+    /* Reportes */
+    {
+      id: 'reportes',
+      trigger: 'reportes',
+      type: 'agent',
+      text: '¿Qué reporte necesitas?',
+      options: [
+        { label: 'Ventas de la semana', value: 'rep_ventas' },
+        { label: 'Citas del mes', value: 'rep_citas' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'rep_ventas',
+      trigger: 'rep_ventas',
+      type: 'agent',
+      text: '*Ventas de la semana*\n\nLun — Bs. 1.200\nMar — Bs. 1.450\nMié — Bs. 1.300\nJue — Bs. 1.980\nVie — Bs. 3.550\n\n*Total: Bs. 9.480* (+12% vs semana anterior)',
+      options: [
+        { label: 'Enviar por correo', value: 'rep_mail' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'rep_citas',
+      trigger: 'rep_citas',
+      type: 'agent',
+      text: '*Citas del mes*\n\n📅 Agendadas: 142\n✅ Completadas: 128\n🚫 Canceladas: 9\n⚠️ No asistieron: 5',
+      options: [
+        { label: 'Enviar por correo', value: 'rep_mail' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'rep_mail',
+      trigger: 'rep_mail',
+      type: 'agent',
+      text: '*Reporte enviado* a tu correo en PDF. Si quieres, puedo programarlo para que llegue cada lunes.',
+      options: [{ label: 'Volver al menú', value: 'menu' }],
+    },
+
+    /* KPIs */
+    {
+      id: 'kpis',
+      trigger: 'kpis',
+      type: 'agent',
+      text: '*KPIs del mes*\n\n📈 Ventas: Bs. 38.900 (+12%)\n💬 Conversaciones: 1.247\n⚡ Respuesta media: 3 seg\n🎯 Conversión: 24%\n🔁 Clientes recurrentes: 61%',
+      options: [
+        { label: 'Ver por canal', value: 'kpi_canal' },
+        { label: 'Volver al menú', value: 'menu' },
+      ],
+    },
+    {
+      id: 'kpi_canal',
+      trigger: 'kpi_canal',
+      type: 'agent',
+      text: '*Ventas por canal*\n\n🟢 WhatsApp — 78%\n🟣 Instagram — 14%\n🔵 Web — 8%\n\nWhatsApp es tu canal más fuerte.',
+      options: [{ label: 'Volver al menú', value: 'menu' }],
+    },
+  ],
+};
+
 /* ──────────────────── HELPERS ──────────────────── */
 
 const barberAvailabilityMap = {
@@ -281,7 +449,7 @@ function resolveText(template, context) {
 
 /* ──────────────────── MAIN COMPONENT ──────────────────── */
 
-const FLOWS = [barberiaFlow, salonFlow, techFlow];
+const FLOWS = [barberiaFlow, salonFlow, techFlow, gestionFlow];
 
 const WhatsAppDemo = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -351,7 +519,7 @@ const ActivityPanel = ({ events }) => {
     <div className="wa-demo-side">
       <div className="wa-try-card">
         <h3>Pruébalo tú mismo</h3>
-        <p>Toca una opción o escribe como si fueras un cliente.</p>
+        <p>Toca una opción o escribe tu mensaje como en WhatsApp.</p>
       </div>
 
       <div className="wa-activity-card">
