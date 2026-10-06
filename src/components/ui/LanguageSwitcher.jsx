@@ -11,7 +11,9 @@ const LanguageSwitcher = () => {
     { code: 'en', label: 'EN', flag: '🇺🇸' }
   ];
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  // resolvedLanguage is always one of the supported codes (i18n.language may be 'en-US')
+  const activeCode = i18n.resolvedLanguage || i18n.language;
+  const currentLanguage = languages.find(lang => lang.code === activeCode) || languages[0];
 
   const changeLanguage = (languageCode) => {
     i18n.changeLanguage(languageCode);
@@ -55,7 +57,7 @@ const LanguageSwitcher = () => {
               <button
                 key={language.code}
                 className={`language-option ${
-                  language.code === i18n.language ? 'active' : ''
+                  language.code === activeCode ? 'active' : ''
                 }`}
                 onClick={() => changeLanguage(language.code)}
               >

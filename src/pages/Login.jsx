@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import './Login.css';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'https://dot-revealable-telescopically.ngrok-free.dev';
@@ -12,7 +14,17 @@ const AUTH_ENDPOINTS = {
   resendVerification: '/auth/resend-verification',
 };
 
-const INDUSTRY_OPTIONS = ['Tecnología', 'Retail', 'Servicios', 'Alimentos y bebidas', 'Salud', 'Logística', 'Educación', 'Otro'];
+// `value` is what the API stores; `key` picks the label shown in the active language
+const INDUSTRY_OPTIONS = [
+  { value: 'Tecnología', key: 'technology' },
+  { value: 'Retail', key: 'retail' },
+  { value: 'Servicios', key: 'services' },
+  { value: 'Alimentos y bebidas', key: 'food' },
+  { value: 'Salud', key: 'health' },
+  { value: 'Logística', key: 'logistics' },
+  { value: 'Educación', key: 'education' },
+  { value: 'Otro', key: 'other' },
+];
 const COMPANY_SIZE_OPTIONS = ['1-10', '11-50', '51-200', '200+'];
 const TIME_ZONE_OPTIONS = ['America/La_Paz', 'UTC-04:00', 'UTC'];
 const CURRENCY_OPTIONS = ['BOB', 'USD', 'EUR'];
@@ -68,7 +80,7 @@ const requestJson = async (endpoint, body) => {
   data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.message || data.error || 'No se pudo completar la solicitud.');
+    throw new Error(data.message || data.error || i18n.t('auth.errors.request'));
   }
 
   return data;
@@ -137,41 +149,46 @@ const SelectField = ({ label, name, value, onChange, children, required = false 
   </label>
 );
 
-const ChoiceStep = ({ onChooseFlow, onLogin }) => (
+const ChoiceStep = ({ onChooseFlow, onLogin }) => {
+  const { t } = useTranslation();
+
+  return (
   <div className="login-step welcome-step">
     <div className="login-logo-wrapper">
-      <img src="/OPTUSLOGO.png" alt="OPTUS Logo" className="login-logo-img" />
+      <img src="/OPTUSLOGO.png" alt="Optimype" className="login-logo-img" />
     </div>
 
     <div className="login-welcome-text">
-      <h1 className="login-title">Acceso a <span className="accent-text">OPTUS</span></h1>
+      <h1 className="login-title">{t('auth.choice.titlePrefix')} <span className="accent-text">Optimype</span></h1>
     </div>
 
     <div className="login-divider" />
 
     <div className="auth-choice-grid">
       <button type="button" className="auth-choice-card" onClick={() => onChooseFlow('join')}>
-        <span className="auth-choice-tag">Registro</span>
-        <strong>Unirme a una empresa</strong>
-        <span>Ingresa con un código de empresa y completa tus datos de usuario.</span>
+        <span className="auth-choice-tag">{t('auth.choice.tag')}</span>
+        <strong>{t('auth.choice.joinTitle')}</strong>
+        <span>{t('auth.choice.joinText')}</span>
       </button>
 
       <button type="button" className="auth-choice-card" onClick={() => onChooseFlow('create')}>
-        <span className="auth-choice-tag">Registro</span>
-        <strong>Crear empresa</strong>
-        <span>Registra tu compañía con sus datos base y habilita el acceso del equipo.</span>
+        <span className="auth-choice-tag">{t('auth.choice.tag')}</span>
+        <strong>{t('auth.choice.createTitle')}</strong>
+        <span>{t('auth.choice.createText')}</span>
       </button>
     </div>
 
-    <button type="button" className="btn-text-action" onClick={onLogin}>Ya tengo cuenta, iniciar sesión</button>
+    <button type="button" className="btn-text-action" onClick={onLogin}>{t('auth.choice.haveAccount')}</button>
 
   </div>
-);
+  );
+};
 
 const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBack }) => {
   const isLogin = flow === 'login';
   const isJoin = flow === 'join';
   const isCreate = flow === 'create';
+  const { t } = useTranslation();
 
   return (
     <div className="login-step auth-form-step">
@@ -180,15 +197,11 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
       </div>
 
       <h2 className="step-title">
-        {isLogin && 'Iniciar sesión'}
-        {isJoin && 'Unirme a una empresa'}
-        {isCreate && 'Crear empresa'}
+        {t(`auth.form.titles.${flow}`)}
       </h2>
 
       <p className="step-subtitle">
-        {isLogin && 'Usa tu correo y contraseña para entrar al panel.'}
-        {isJoin && 'Completa tus datos y el código de la empresa para registrarte.'}
-        {isCreate && 'Completa tus datos personales y los datos base de tu empresa.'}
+        {t(`auth.form.subtitles.${flow}`)}
       </p>
 
       {error && (
@@ -200,19 +213,19 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
       <form className="auth-form" onSubmit={onSubmit}>
         {!isLogin && (
           <div className="form-section">
-            <div className="form-section-title">Datos del usuario</div>
+            <div className="form-section-title">{t('auth.form.sections.user')}</div>
             <div className="field-grid">
               <FormField
-                label="Nombre completo"
+                label={t('auth.form.fields.fullName.label')}
                 name="fullName"
                 value={formData.fullName}
                 onChange={onChange}
-                placeholder="Tu nombre y apellido"
+                placeholder={t('auth.form.fields.fullName.placeholder')}
                 required
                 autoComplete="name"
               />
               <FormField
-                label="Teléfono (opcional)"
+                label={t('auth.form.fields.phone.label')}
                 name="phone"
                 value={formData.phone}
                 onChange={onChange}
@@ -224,20 +237,20 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
         )}
 
         <div className="form-section">
-          <div className="form-section-title">Acceso</div>
+          <div className="form-section-title">{t('auth.form.sections.access')}</div>
           <div className="field-grid">
             <FormField
-              label="Correo electrónico"
+              label={t('auth.form.fields.email.label')}
               name="email"
               type="email"
               value={formData.email}
               onChange={onChange}
-              placeholder="correo@empresa.com"
+              placeholder={t('auth.form.fields.email.placeholder')}
               required
               autoComplete="email"
             />
             <FormField
-              label="Contraseña"
+              label={t('auth.form.fields.password.label')}
               name="password"
               type="password"
               value={formData.password}
@@ -251,13 +264,13 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
 
         {isJoin && (
           <div className="form-section">
-            <div className="form-section-title">Empresa</div>
+            <div className="form-section-title">{t('auth.form.sections.company')}</div>
             <FormField
-              label="Código de empresa"
+              label={t('auth.form.fields.companyCode.label')}
               name="companyCode"
               value={formData.companyCode}
               onChange={onChange}
-              placeholder="Ingresa el código de tu empresa"
+              placeholder={t('auth.form.fields.companyCode.placeholder')}
               required
             />
           </div>
@@ -265,45 +278,45 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
 
         {isCreate && (
           <div className="form-section">
-            <div className="form-section-title">Empresa</div>
+            <div className="form-section-title">{t('auth.form.sections.company')}</div>
             <div className="field-grid">
               <FormField
-                label="Nombre de la empresa"
+                label={t('auth.form.fields.companyName.label')}
                 name="companyName"
                 value={formData.companyName}
                 onChange={onChange}
-                placeholder="OPTUS"
+                placeholder={t('auth.form.fields.companyName.placeholder')}
                 required
               />
               <FormField
-                label="Slug de empresa (opcional)"
+                label={t('auth.form.fields.companySlug.label')}
                 name="companySlug"
                 value={formData.companySlug}
                 onChange={onChange}
-                placeholder="optus"
+                placeholder={t('auth.form.fields.companySlug.placeholder')}
               />
               <SelectField
-                label="Industria"
+                label={t('auth.form.fields.industry.label')}
                 name="industry"
                 value={formData.industry}
                 onChange={onChange}
                 required
               >
-                <option value="" disabled>Selecciona una industria</option>
-                {INDUSTRY_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                <option value="" disabled>{t('auth.form.fields.industry.placeholder')}</option>
+                {INDUSTRY_OPTIONS.map((option) => <option key={option.key} value={option.value}>{t(`auth.form.industries.${option.key}`)}</option>)}
               </SelectField>
               <SelectField
-                label="Tamaño"
+                label={t('auth.form.fields.size.label')}
                 name="size"
                 value={formData.size}
                 onChange={onChange}
                 required
               >
-                <option value="" disabled>Selecciona el tamaño</option>
+                <option value="" disabled>{t('auth.form.fields.size.placeholder')}</option>
                 {COMPANY_SIZE_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
               </SelectField>
               <SelectField
-                label="Zona horaria"
+                label={t('auth.form.fields.timeZone.label')}
                 name="timeZone"
                 value={formData.timeZone}
                 onChange={onChange}
@@ -312,7 +325,7 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
                 {TIME_ZONE_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
               </SelectField>
               <SelectField
-                label="Moneda"
+                label={t('auth.form.fields.currency.label')}
                 name="currency"
                 value={formData.currency}
                 onChange={onChange}
@@ -327,40 +340,41 @@ const AuthFormStep = ({ flow, formData, loading, error, onChange, onSubmit, onBa
         {!isLogin && (
           <label className="terms-row" htmlFor="acceptTerms">
             <input id="acceptTerms" name="acceptTerms" type="checkbox" checked={formData.acceptTerms} onChange={onChange} />
-            <span>Acepto los términos y autorizo el alta de mi cuenta.</span>
+            <span>{t('auth.form.terms')}</span>
           </label>
         )}
 
         <button className="btn-login-primary" type="submit" disabled={loading}>
           {loading ? (
-            <><i className="fas fa-spinner fa-spin" /> Procesando...</>
+            <><i className="fas fa-spinner fa-spin" /> {t('auth.form.processing')}</>
           ) : (
             <>
               <i className="fas fa-arrow-right" />
-              {isLogin && 'Entrar'}
-              {isJoin && 'Registrar y unirme'}
-              {isCreate && 'Registrar empresa'}
+              {t(`auth.form.submit.${flow}`)}
             </>
           )}
         </button>
       </form>
 
       <button type="button" className="btn-back-step" onClick={onBack}>
-        <i className="fas fa-arrow-left" /> Volver
+        <i className="fas fa-arrow-left" /> {t('auth.back')}
       </button>
     </div>
   );
 };
 
-const VerificationStep = ({ email, token, loading, error, message, onTokenChange, onVerify, onResend, onBack }) => (
+const VerificationStep = ({ email, token, loading, error, message, onTokenChange, onVerify, onResend, onBack }) => {
+  const { t } = useTranslation();
+
+  return (
   <div className="login-step auth-form-step">
     <div className="step-icon-wrapper success">
       <i className="fas fa-envelope-open-text step-icon" />
     </div>
 
-    <h2 className="step-title">Verifica tu correo</h2>
+    <h2 className="step-title">{t('auth.verify.title')}</h2>
     <p className="step-subtitle">
-      Enviamos un token a <strong>{email || 'tu correo registrado'}</strong>. Ingrésalo para activar tu acceso.
+      {t('auth.verify.sentBefore')} <strong>{email || t('auth.verify.fallbackEmail')}</strong>. {t('auth.verify.sentAfter')}
     </p>
 
     {message && (
@@ -377,11 +391,11 @@ const VerificationStep = ({ email, token, loading, error, message, onTokenChange
 
     <form className="auth-form" onSubmit={onVerify}>
       <FormField
-        label="Token de verificación"
+        label={t('auth.verify.tokenLabel')}
         name="verificationToken"
         value={token}
         onChange={onTokenChange}
-        placeholder="Ingresa el token del correo"
+        placeholder={t('auth.verify.tokenPlaceholder')}
         required
         autoComplete="one-time-code"
       />
@@ -389,25 +403,27 @@ const VerificationStep = ({ email, token, loading, error, message, onTokenChange
       <div className="verification-actions">
         <button className="btn-login-primary" type="submit" disabled={loading}>
           {loading ? (
-            <><i className="fas fa-spinner fa-spin" /> Verificando...</>
+            <><i className="fas fa-spinner fa-spin" /> {t('auth.verify.verifying')}</>
           ) : (
-            <><i className="fas fa-shield-halved" /> Verificar email</>
+            <><i className="fas fa-shield-halved" /> {t('auth.verify.submit')}</>
           )}
         </button>
 
         <button className="btn-secondary-action" type="button" onClick={onResend} disabled={loading}>
-          <i className="fas fa-rotate-right" /> Reenviar token
+          <i className="fas fa-rotate-right" /> {t('auth.verify.resend')}
         </button>
       </div>
     </form>
 
     <button type="button" className="btn-back-step" onClick={onBack}>
-      <i className="fas fa-arrow-left" /> Volver al formulario
+      <i className="fas fa-arrow-left" /> {t('auth.verify.backToForm')}
     </button>
   </div>
-);
+  );
+};
 
 const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -469,22 +485,22 @@ const Login = () => {
     setMessage('');
 
     if (flow !== 'login' && !formData.acceptTerms) {
-      setError('Debes aceptar los términos para continuar.');
+      setError(t('auth.errors.terms'));
       return;
     }
 
     if (flow !== 'login' && !trimOrEmpty(formData.fullName)) {
-      setError('El nombre completo es obligatorio.');
+      setError(t('auth.errors.fullName'));
       return;
     }
 
     if (flow === 'join' && !trimOrEmpty(formData.companyCode)) {
-      setError('Necesitas un código de empresa válido.');
+      setError(t('auth.errors.companyCode'));
       return;
     }
 
     if (flow === 'create' && (!trimOrEmpty(formData.companyName) || !trimOrEmpty(formData.industry) || !trimOrEmpty(formData.size))) {
-      setError('Completa los datos mínimos de la empresa.');
+      setError(t('auth.errors.company'));
       return;
     }
 
@@ -503,7 +519,7 @@ const Login = () => {
           setVerificationEmail(data.email || trimOrEmpty(formData.email));
           setVerificationToken('');
           setStep('verify');
-          setMessage(getDisplayMessage(data, 'Tu cuenta necesita verificación.'));
+          setMessage(getDisplayMessage(data, t('auth.messages.needsVerification')));
           return;
         }
 
@@ -521,7 +537,7 @@ const Login = () => {
         setVerificationEmail(data.email || trimOrEmpty(formData.email));
         setVerificationToken('');
         setStep('verify');
-        setMessage(getDisplayMessage(data, 'Revisa tu correo para verificar tu cuenta.'));
+        setMessage(getDisplayMessage(data, t('auth.messages.checkEmail')));
         return;
       }
 
@@ -535,14 +551,14 @@ const Login = () => {
         setVerificationEmail(data.email || trimOrEmpty(formData.email));
         setVerificationToken('');
         setStep('verify');
-        setMessage(getDisplayMessage(data, 'Tu empresa fue creada. Verifica tu correo para continuar.'));
+        setMessage(getDisplayMessage(data, t('auth.messages.companyCreated')));
       }
     } catch (submitError) {
       setError(submitError.message);
     } finally {
       setLoading(false);
     }
-  }, [flow, formData, navigate]);
+  }, [flow, formData, navigate, t]);
 
   const handleVerify = useCallback(async (event) => {
     event.preventDefault();
@@ -564,7 +580,7 @@ const Login = () => {
 
   const handleResend = useCallback(async () => {
     if (!verificationEmail) {
-      setError('No tenemos un correo para reenviar la verificación.');
+      setError(t('auth.errors.noEmail'));
       return;
     }
 
@@ -577,13 +593,13 @@ const Login = () => {
         email: verificationEmail,
       });
 
-      setMessage(getDisplayMessage(data, 'Te enviamos un nuevo token de verificación.'));
+      setMessage(getDisplayMessage(data, t('auth.messages.tokenSent')));
     } catch (resendError) {
       setError(resendError.message);
     } finally {
       setLoading(false);
     }
-  }, [verificationEmail]);
+  }, [verificationEmail, t]);
 
   const handleBack = useCallback(() => {
     setError('');
@@ -609,13 +625,13 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <button className="btn-back" onClick={() => navigate('/')} aria-label="Volver al inicio">
+      <button className="btn-back" onClick={() => navigate('/')} aria-label={t('auth.backHomeAria')}>
         <i className="fas fa-arrow-left" />
-        Volver
+        {t('auth.back')}
       </button>
 
       {step !== 'choice' && (
-        <div className="step-progress" aria-label="Progreso de acceso">
+        <div className="step-progress" aria-label={t('auth.progressAria')}>
           {progressSteps.map((currentStep) => {
             const currentIndex = progressSteps.indexOf(step);
             const stepIndex = progressSteps.indexOf(currentStep);
@@ -628,7 +644,7 @@ const Login = () => {
 
       <div className="login-card">
         <div className="card-logo">
-          <img src="/OPTUSLOGO.png" alt="OPTUS Logo" className="card-logo-img" />
+          <img src="/OPTUSLOGO.png" alt="Optimype" className="card-logo-img" />
         </div>
 
         {step === 'choice' && <ChoiceStep onChooseFlow={handleChooseFlow} onLogin={handleLogin} />}
@@ -660,7 +676,7 @@ const Login = () => {
         )}
       </div>
 
-      <p className="login-footer-brand">© {new Date().getFullYear()} OPTUS · Todos los derechos reservados</p>
+      <p className="login-footer-brand">© {new Date().getFullYear()} Optimype · {t('auth.footer')}</p>
     </div>
   );
 };

@@ -91,7 +91,7 @@ const About = () => {
             Transformación Digital hecha en <span className="bolivia-badge"> Bolivia</span>
           </h3>
           <p>
-            <strong>OPTUS</strong> es la plataforma de <strong>agentes inteligentes</strong> diseñada para que emprendedores, jóvenes y <em>startups</em> puedan <strong>automatizar su negocio sin conocimientos técnicos</strong>.
+            <strong>Optimype</strong> es la plataforma de <strong>agentes inteligentes</strong> diseñada para que emprendedores, jóvenes y <em>startups</em> puedan <strong>automatizar su negocio sin conocimientos técnicos</strong>.
           </p>
           <p>
             Mediante APIs de mensajería y servicios en la nube, convertimos <strong>WhatsApp en un asistente digital 24/7</strong> que vende, agenda, cobra, responde clientes y genera reportes con la misma facilidad con la que se envía un mensaje.

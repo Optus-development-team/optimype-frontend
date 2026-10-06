@@ -28,7 +28,7 @@ const connectors = connectorsForWallets(
     },
   ],
   {
-    appName: 'OPTUS Payment',
+    appName: 'Optimype',
     projectId,
   }
 );
@@ -41,7 +41,7 @@ const arcTestnetWithIcon = {
 };
 
 export const config = getDefaultConfig({
-  appName: 'OPTUS Payment',
+  appName: 'Optimype',
   projectId,
   chains: [mainnet, polygon, avalancheFuji, baseSepolia, arcTestnetWithIcon],
   connectors,

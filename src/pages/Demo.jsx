@@ -54,7 +54,7 @@ export default function Demo() {
       {/* ── Header ────────────────────────────────────────── */}
       <header className="demo-header">
         <div className="demo-logo">
-          <img src="/OPTUSLOGO.png" alt="OPTUS" />
+          <img src="/OPTUSLOGO.png" alt="Optimype" />
         </div>
         <h1 className="demo-title">
           {t('demo.titlePrefix')}{' '}

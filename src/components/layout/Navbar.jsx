@@ -28,7 +28,7 @@ const Navbar = () => {
             <div className="container">
                 <nav className="nav">
                     <Link to="/" className="logo nav-logo-area">
-                        <img src="/optus%20logo.gif" alt="OPTUS Logo" style={{ height: '70px', width: 'auto', objectFit: 'contain' }} />
+                        <img src="/optus%20logo.gif" alt="Optimype" style={{ height: '70px', width: 'auto', objectFit: 'contain' }} />
                     </Link>
                     
                     <ul className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`} id="nav-links">

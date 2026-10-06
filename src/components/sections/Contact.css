@@ -180,15 +180,15 @@ body.dark-theme #dot-grid .cell {
 
 @media (max-width: 768px) {
     #dot-grid .cell {
-        width: 7px;
-        height: 7px;
+        width: 6px;
+        height: 6px;
     }
     #dot-grid {
-        gap: 4px;
+        gap: 3px;
         padding: 10px;
     }
     #dot-grid .row {
-        gap: 4px;
+        gap: 3px;
     }
     .dot-grid-container {
         min-height: 150px;
@@ -198,8 +198,8 @@ body.dark-theme #dot-grid .cell {
 
 @media (max-width: 480px) {
     #dot-grid .cell {
-        width: 5px;
-        height: 5px;
+        width: 4px;
+        height: 4px;
     }
     #dot-grid {
         gap: 3px;

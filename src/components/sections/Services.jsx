@@ -22,7 +22,7 @@ const Services = () => {
       id: 3,
       icon: 'fas fa-network-wired',
       title: 'Integración de Sistemas Inteligentes',
-      description: 'Conecta OPTUS con tus sistemas de pago, CRM, inventario y más para tener un ecosistema digital totalmente sincronizado.'
+      description: 'Conecta Optimype con tus sistemas de pago, CRM, inventario y más para tener un ecosistema digital totalmente sincronizado.'
     },
     {
       id: 4,
