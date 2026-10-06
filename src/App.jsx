@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { PrivyProvider } from '@privy-io/react-auth';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -18,7 +18,8 @@ import Prueba from './pages/Prueba';
 import Privacy from './pages/Privacy';
 import TerminosServicio from './pages/TerminosServicio';
 import Eliminar from './pages/Eliminar';
-import Pago from './pages/Pago';
+// The payment page pulls in wagmi + RainbowKit (and their network calls): load it on demand
+const Pago = lazy(() => import('./pages/Pago'));
 import Dashboard from './pages/Dashboard';
 import Demo from './pages/Demo';
 import Introductions from './pages/Introductions';
@@ -56,8 +57,8 @@ function AppContent() {
           <Route path="/terminos-servicio" element={<TerminosServicio />} />
           <Route path="/politica-privacidad" element={<Privacy />} />
           <Route path="/eliminar" element={<Eliminar />} />
-          <Route path="/pago" element={<Pago />} />
-          <Route path="/pago/:codigoOrden" element={<Pago />} />
+          <Route path="/pago" element={<Suspense fallback={null}><Pago /></Suspense>} />
+          <Route path="/pago/:codigoOrden" element={<Suspense fallback={null}><Pago /></Suspense>} />
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/introductions" element={<Introductions />} />
