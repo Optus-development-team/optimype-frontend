@@ -83,12 +83,19 @@ Colores, tipografías y componentes están descritos en [`OPTUS_BRANDKIT.md`](OP
 
 ## Despliegue
 
-Vercel, proyecto `optimype-frontend`, con el dominio `optimype.optus.lat` (`mypes.optus.lat`
-redirige a él). Es un sitio estático: `npm run build` genera `dist/`.
+Vercel, proyecto `optimype-frontend` (equipo `optusteams-projects`), con el dominio
+`optimype.optus.lat` (`mypes.optus.lat` redirige a él). Es un sitio estático: `npm run build`
+genera `dist/` y `vercel.json` sirve `index.html` en cualquier ruta que no sea un archivo.
 
 ```bash
 vercel --prod
 ```
+
+Se despliega con el CLI, no con la integración de Git: `vercel.json` la desactiva
+(`git.deploymentEnabled: false`). Así el proyecto antiguo de Vercel, el que publicaba este repo en
+`optus.lat` (`optus-aut.vercel.app`, en otra cuenta), queda **en desuso** y ya no recibe
+despliegues. Si algún día se conecta este repo por Git al proyecto actual, hay que quitar esa
+línea.
 
 ## Contacto
 
