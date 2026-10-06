@@ -10,8 +10,8 @@
 
 .footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: 2fr repeat(5, 1fr);
+    gap: 2.25rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 2rem;
     margin-bottom: 1.5rem;
@@ -54,6 +54,19 @@
     font-weight: 400;
     font-size: 0.95rem;
     margin: 0.5rem 0;
+}
+
+/* "Optimype es una marca perteneciente a Optus" */
+.footer-col p.footer-parent {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.footer-col p.footer-parent a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .footer-logo-area {

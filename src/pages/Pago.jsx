@@ -79,7 +79,7 @@ const PagoContent = () => {
             id: 'demo-order-12345',
             company: { name: 'Demo Company' },
             user: { phone: '+591 77379190' },
-            details: 'Demostración de pago OPTUS',
+            details: 'Demostración de pago Optimype',
             total_amount: 150.00,
             status: 'CART',
             metadata: {
@@ -594,7 +594,7 @@ const PagoContent = () => {
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(22);
       doc.setFont('helvetica', 'bold');
-      doc.text('OPTUS', 105, 18, { align: 'center' });
+      doc.text('Optimype', 105, 18, { align: 'center' });
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
       doc.text(t('payment.receipt.subtitle'), 105, 28, { align: 'center' });
@@ -634,7 +634,7 @@ const PagoContent = () => {
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(7);
       doc.text(t('payment.receipt.footer'), 105, 289, { align: 'center' });
-      doc.save(`OPTUS_Receipt_${orderData.id?.slice(0, 8) || 'order'}.pdf`);
+      doc.save(`Optimype_Receipt_${orderData.id?.slice(0, 8) || 'order'}.pdf`);
     } catch (err) {
       console.error('PDF generation error:', err);
     } finally {
@@ -843,7 +843,7 @@ const PagoContent = () => {
             <ThemeLanguageToggle />
           </div>
           <div className="hero-content">
-            <img src="/OPTUSLOGO.png" alt="OPTUS" className="hero-logo" />
+            <img src="/OPTUSLOGO.png" alt="Optimype" className="hero-logo" />
             <h1>{t('payment.title')}</h1>
           </div>
         </div>
@@ -909,7 +909,7 @@ const PagoContent = () => {
 
           <div className="summary-secured">
             <i className="fas fa-shield-halved"></i>
-            <span>{t('payment.securedBy')} OPTUS</span>
+            <span>{t('payment.securedBy')} Optimype</span>
           </div>
         </aside>
 

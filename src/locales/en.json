@@ -12,14 +12,14 @@
     "logout": "Log Out"
   },
   "hero": {
-    "title": "Optus does, you advance",
+    "title": "Optimype does, you advance",
     "subtitle": "AI agents that sell, schedule and collect via WhatsApp. Simple, fast and without complex configurations for your growing business.",
     "ctaPrimary": "Schedule an appointment",
     "ctaSecondary": "View Services"
   },
   "whyOptus": {
     "liveTitle": "LIVE",
-    "liveSubtitle": "Watch OPTUS in Action",
+    "liveSubtitle": "Watch Optimype in Action",
     "demoSubtitle": "This is how your AI agent works every second of the day",
     "metrics": {
       "responseTime": "Response time",
@@ -29,20 +29,20 @@
     },
     "problems": {
       "title": "Does This Sound Familiar?",
-      "subtitle": "Real problems that OPTUS solves today",
+      "subtitle": "Real problems that Optimype solves today",
       "night": {
         "question": "Do you lose customers at night?",
-        "solution": "OPTUS responds 24/7",
+        "solution": "Optimype responds 24/7",
         "stat": "87% of inquiries outside business hours"
       },
       "payment": {
         "question": "Do you collect payment late and lose money?",
-        "solution": "OPTUS collects instantly",
+        "solution": "Optimype collects instantly",
         "stat": "60% improvement in cash flow"
       },
       "team": {
         "question": "Is your team overwhelmed?",
-        "solution": "OPTUS scales without limits",
+        "solution": "Optimype scales without limits",
         "stat": "Infinite conversations"
       },
       "solveNow": "Solve Now"
@@ -50,10 +50,10 @@
     "transformation": {
       "title": "Your Business",
       "beforeAfter": "Before vs After",
-      "ofOptus": "OPTUS",
-      "subtitle": "The difference OPTUS makes in your daily life",
-      "without": "WITHOUT OPTUS",
-      "with": "WITH OPTUS",
+      "ofOptus": "Optimype",
+      "subtitle": "The difference Optimype makes in your daily life",
+      "without": "WITHOUT Optimype",
+      "with": "WITH Optimype",
       "before": {
         "morning": "You arrive and have 47 unread WhatsApp messages",
         "midMorning": "You keep answering the same thing: \"How much does it cost?\" over and over",
@@ -61,8 +61,8 @@
         "evening": "You end up exhausted without having advanced on your strategy"
       },
       "after": {
-        "morning": "OPTUS already handled the 47 messages during the night",
-        "midMorning": "You focus on strategy while OPTUS answers FAQs",
+        "morning": "Optimype already handled the 47 messages during the night",
+        "midMorning": "You focus on strategy while Optimype answers FAQs",
         "afternoon": "You receive notification: \"3 new customers scheduled\"",
         "evening": "You finish with 10 closed sales and confirmed payments"
       },
@@ -109,7 +109,7 @@
   },
   "contact": {
     "title": "Ready to Automate Your Business?",
-    "subtitle": "Start today and discover how OPTUS can transform your business with artificial intelligence.",
+    "subtitle": "Start today and discover how Optimype can transform your business with artificial intelligence.",
     "whatsappBtn": "Contact via WhatsApp",
     "emailBtn": "Send Email",
     "location": "La Paz, Bolivia",
@@ -125,7 +125,7 @@
     "ctaSecondary": "Chat with Us",
     "hero": {
       "title": "Digital Transformation Made in Bolivia",
-      "subtitle": "We are OPTUS, the leading platform in automation and artificial intelligence for the new generation of Bolivian businesses."
+      "subtitle": "We are Optimype, the leading platform in automation and artificial intelligence for the new generation of Bolivian businesses."
     },
     "sections": {
       "mission": "Our Mission",
@@ -186,7 +186,7 @@
     "mission": {
       "slide1": {
         "title": "Automation Without Barriers",
-        "description": "OPTUS is the intelligent agent platform designed for entrepreneurs, young people and startups to automate their business without technical knowledge."
+        "description": "Optimype is the intelligent agent platform designed for entrepreneurs, young people and startups to automate their business without technical knowledge."
       },
       "slide2": {
         "title": "What We Are Building",
@@ -254,7 +254,7 @@
       "systemsIntegration": {
         "title": "Intelligent Systems Integration",
         "subtitle": "Unified digital ecosystem",
-        "description": "Connect OPTUS with your payment systems, CRM, inventory and more for a fully synchronized digital ecosystem.",
+        "description": "Connect Optimype with your payment systems, CRM, inventory and more for a fully synchronized digital ecosystem.",
         "features": [
           "Integration with payment gateways (QR, cards, wallets)",
           "Connection with CRM (HubSpot, Salesforce, Zoho)",
@@ -338,7 +338,7 @@
   "portfolio": {
     "hero": {
       "title": "Real Success Stories",
-      "subtitle": "Bolivian companies that transformed their operations with OPTUS. Measurable results, fast implementation and proven ROI."
+      "subtitle": "Bolivian companies that transformed their operations with Optimype. Measurable results, fast implementation and proven ROI."
     },
     "stats": {
       "companies": "Companies Served",
@@ -472,13 +472,13 @@
     "ctaSecondary": "Consult Now",
     "hero": {
       "title": "Benefits that Transform Your Business",
-      "subtitle": "Not just automation. OPTUS is your competitive advantage in the Bolivian digital market."
+      "subtitle": "Not just automation. Optimype is your competitive advantage in the Bolivian digital market."
     },
     "sections": {
-      "whyOptus": "Why Does OPTUS Make the Difference?",
+      "whyOptus": "Why Does Optimype Make the Difference?",
       "whyOptusSubtitle": "Measurable results from day one. Smart investment with guaranteed return.",
       "businessImpact": "Impact on Every Area of Your Company",
-      "comparison": "OPTUS vs Traditional Methods",
+      "comparison": "Optimype vs Traditional Methods",
       "comparisonSubtitle": "The difference is clear. The numbers speak for themselves.",
       "roi": "Proven Return on Investment"
     },
@@ -571,7 +571,7 @@
       "headers": {
         "aspect": "Aspect",
         "traditional": "Traditional Method",
-        "optus": "With OPTUS",
+        "optus": "With Optimype",
         "improvement": "Improvement"
       },
       "data": {
@@ -626,16 +626,17 @@
       },
       "cta": "Calculate Your ROI"
     },
-    "implementationNote": "OPTUS implementation is fast and efficient. In most cases, your AI agent can be live in less than 2 weeks."
+    "implementationNote": "Optimype implementation is fast and efficient. In most cases, your AI agent can be live in less than 2 weeks."
   },
   "footer": {
-    "company": "OPTUS",
+    "company": "Optimype",
     "description": "The leading intelligent agent platform for automation for the new generation of businesses in Bolivia.",
     "sections": {
       "company": "Company",
       "services": "Services",
       "contact": "Contact",
-      "legal": "Legal"
+      "legal": "Legal",
+      "ecosystem": "Optus ecosystem"
     },
     "links": {
       "aboutUs": "About Us",
@@ -658,7 +659,13 @@
       "terms": "Terms of Service",
       "deleteInfo": "Delete Information"
     },
-    "rights": "All rights reserved"
+    "rights": "All rights reserved",
+    "parent": "Optimype is a brand owned by Optus.",
+    "ecosystem": {
+      "optus": "Optus, the company",
+      "optipagos": "Optipagos, a wallet inside WhatsApp"
+    },
+    "social": "Optus on {{network}}"
   },
   "demo": {
     "customers": {
@@ -682,18 +689,18 @@
       "automatedPayment": "Automated payment verification"
     },
     "titlePrefix": "How to Use",
-    "titleHighlight": "OPTUS?",
+    "titleHighlight": "Optimype?",
     "subtitle": "Follow these simple steps to start automating your business with artificial intelligence.",
     "step": "Step",
     "steps": {
       "step1": {
         "title": "Sign In",
-        "description": "Access the OPTUS platform to start managing your business with artificial intelligence. It's fast and secure.",
+        "description": "Access the Optimype platform to start managing your business with artificial intelligence. It's fast and secure.",
         "cta": "Go to Login"
       },
       "step2": {
         "title": "Connect with Google",
-        "description": "Securely authenticate your Google account. In just a few seconds you'll be ready to use the full OPTUS system.",
+        "description": "Securely authenticate your Google account. In just a few seconds you'll be ready to use the full Optimype system.",
         "cta": "Connect with Google"
       },
       "step3": {
@@ -702,15 +709,15 @@
         "cta": "Open WhatsApp"
       }
     },
-    "videoTitle": "See OPTUS in Action",
+    "videoTitle": "See Optimype in Action",
     "videoSubtitle": "Watch how our system works in this full demonstration",
     "videoFallback": "Your browser does not support video playback.",
-    "footer": "© 2026 OPTUS · Intelligent Automation for Bolivia"
+    "footer": "© 2026 Optimype · Intelligent Automation for Bolivia"
   },
   "login": {
     "back": "BACK",
     "hero": {
-      "title": "Welcome to OPTUS",
+      "title": "Welcome to Optimype",
       "subtitle": "Manage your business with artificial intelligence"
     },
     "actions": {
@@ -719,7 +726,7 @@
     },
     "authenticated": {
       "welcome": "Welcome!",
-      "successMessage": "You have successfully logged into OPTUS",
+      "successMessage": "You have successfully logged into Optimype",
       "goHome": "Go to Home",
       "logout": "Log Out"
     }
@@ -729,7 +736,7 @@
     "sections": {
       "introduction": {
         "title": "1. Introduction",
-        "content": "At OPTUS, we are committed to protecting the privacy and security of our customers' personal data. This Privacy Policy describes how we collect, use, store, and protect your information when you use our automation services and intelligent agents."
+        "content": "At Optimype, a product by Optus, we are committed to protecting the privacy and security of our customers' personal data. This Privacy Policy describes how we collect, use, store, and protect your information when you use our automation services and intelligent agents."
       },
       "dataCollection": {
         "title": "2. Information We Collect",
@@ -815,7 +822,7 @@
   },
   "delete": {
     "title": "Information Deletion Request",
-    "intro": "At OPTUS, we respect your right to privacy and control over your personal data. This page allows you to request the complete deletion of your personal information from our systems.",
+    "intro": "At Optimype, a product by Optus, we respect your right to privacy and control over your personal data. This page allows you to request the complete deletion of your personal information from our systems.",
     "warning": {
       "title": "Warning:",
       "content": "Data deletion is permanent and irreversible. Once your request is processed, we cannot recover your information, conversation history, configurations, or any data associated with your account."
@@ -883,10 +890,12 @@
         "label": "Account or User ID (if you know it)",
         "placeholder": "Account ID"
       },
-      "confirmDeletion": "I confirm that I understand this action is permanent and irreversible, and that all my data will be deleted from OPTUS systems.",
-      "confirmBackup": "I understand that OPTUS may retain certain information for legal obligations and that security backups will be deleted according to the standard rotation cycle.",
+      "confirmDeletion": "I confirm that I understand this action is permanent and irreversible, and that all my data will be deleted from Optimype systems.",
+      "confirmBackup": "I understand that Optimype may retain certain information for legal obligations and that security backups will be deleted according to the standard rotation cycle.",
       "submit": " Submit Deletion Request",
-      "successMessage": "Your email client will open to send the request. Please send the email to complete your deletion request."
+      "successMessage": "Your email client will open to send the request. Please send the email to complete your deletion request.",
+      "notSpecified": "Not specified",
+      "none": "None"
     },
     "afterSubmission": {
       "title": "What Happens After Submitting the Request?",
@@ -942,7 +951,8 @@
         "whatsapp": "WhatsApp"
       }
     },
-    "note": "Note: If you only want to update your information or make changes to your account, it is not necessary to delete it. You can manage your data from your account settings or contact us for assistance."
+    "note": "Note: If you only want to update your information or make changes to your account, it is not necessary to delete it. You can manage your data from your account settings or contact us for assistance.",
+    "emailFooter": "This request was sent from Optimype's data deletion form."
   },
   "payment": {
     "title": "Transaction Details",
@@ -1026,7 +1036,7 @@
     },
     "receipt": {
       "title": "Payment Receipt",
-      "subtitle": "Transaction processed by OPTUS",
+      "subtitle": "Transaction processed by Optimype",
       "orderId": "Order ID",
       "company": "Company",
       "user": "User",
@@ -1038,7 +1048,7 @@
       "status": "Status",
       "statusCompleted": "COMPLETED",
       "date": "Payment Date",
-      "footer": "This receipt was automatically generated by OPTUS. For inquiries: optus.aut@gmail.com",
+      "footer": "This receipt was automatically generated by Optimype. For inquiries: optus.aut@gmail.com",
       "network": "Blockchain Network",
       "txHash": "Transaction Hash"
     },
@@ -1060,11 +1070,11 @@
     "sections": {
       "introduction": {
         "title": "1. Introduction",
-        "content": "Welcome to OPTUS. These Terms of Service (\"Terms\") govern the use of our automation and artificial intelligence services. By accessing or using our services, you agree to be bound by these Terms. If you do not agree to any part of these terms, you should not use our services."
+        "content": "Welcome to Optimype, a product by Optus. These Terms of Service (\"Terms\") govern the use of our automation and artificial intelligence services. By accessing or using our services, you agree to be bound by these Terms. If you do not agree to any part of these terms, you should not use our services."
       },
       "serviceDescription": {
         "title": "2. Service Description",
-        "content": "OPTUS provides business automation services through artificial intelligence agents that include:",
+        "content": "Optimype provides business automation services through artificial intelligence agents that include:",
         "services": [
           "Business process automation",
           "Multi-channel communication management",
@@ -1098,7 +1108,7 @@
       },
       "intellectualProperty": {
         "title": "5. Intellectual Property",
-        "content": "All rights, titles and interests in our services, including software, content, trademarks and methodologies, are the exclusive property of OPTUS. You receive a limited, non-exclusive and revocable license to use our services solely under these Terms."
+        "content": "All rights, titles and interests in our services, including software, content, trademarks and methodologies, are the exclusive property of Optus. You receive a limited, non-exclusive and revocable license to use our services solely under these Terms."
       },
       "dataAndPrivacy": {
         "title": "6. Data and Privacy",
@@ -1154,7 +1164,7 @@
   "faq": {
     "hero": {
       "title": "Frequently Asked Questions",
-      "subtitle": "Find quick answers to the most common questions about OPTUS and our automation services"
+      "subtitle": "Find quick answers to the most common questions about Optimype and our automation services"
     },
     "content": {
       "title": "Have questions? We're here to help",
@@ -1162,20 +1172,20 @@
     },
     "questions": {
       "q1": {
-        "question": "What is OPTUS and how can it help my business?",
-        "answer": "OPTUS is an intelligent automation platform that uses AI agents to manage your business communications 24/7. Our agents can answer queries, schedule appointments, process payments, and much more through WhatsApp, without human intervention. This allows you to scale your business, improve customer service, and increase sales while reducing operational costs."
+        "question": "What is Optimype and how can it help my business?",
+        "answer": "Optimype is an intelligent automation platform that uses AI agents to manage your business communications 24/7. Our agents can answer queries, schedule appointments, process payments, and much more through WhatsApp, without human intervention. This allows you to scale your business, improve customer service, and increase sales while reducing operational costs."
       },
       "q2": {
-        "question": "Do I need technical knowledge to use OPTUS?",
-        "answer": "No, OPTUS is designed to be extremely easy to use. You don't need programming knowledge or technical experience. Our team handles the initial setup and provides you with an intuitive interface to manage your agents. Additionally, we offer ongoing technical support and training so you can make the most of all platform features."
+        "question": "Do I need technical knowledge to use Optimype?",
+        "answer": "No, Optimype is designed to be extremely easy to use. You don't need programming knowledge or technical experience. Our team handles the initial setup and provides you with an intuitive interface to manage your agents. Additionally, we offer ongoing technical support and training so you can make the most of all platform features."
       },
       "q3": {
-        "question": "How long does it take to implement OPTUS in my business?",
-        "answer": "The implementation of OPTUS is fast and efficient. In most cases, your AI agent can be operational in less than 48 hours. The process includes: initial analysis of your needs, personalized agent configuration, integration with your existing systems, and team training. Throughout the entire process, our technical team accompanies you to ensure a smooth transition."
+        "question": "How long does it take to implement Optimype in my business?",
+        "answer": "The implementation of Optimype is fast and efficient. In most cases, your AI agent can be operational in less than 48 hours. The process includes: initial analysis of your needs, personalized agent configuration, integration with your existing systems, and team training. Throughout the entire process, our technical team accompanies you to ensure a smooth transition."
       },
       "q4": {
         "question": "What payment methods do you accept and how do they work?",
-        "answer": "OPTUS offers multiple payment options for your convenience: bank payment QR (compatible with all banks in Bolivia), direct bank transfers, and cryptocurrency payments (Bitcoin, USDT, Ethereum). All payments are processed securely and you receive automatic confirmation. For recurring subscription payments, we also accept direct debit for greater convenience."
+        "answer": "Optimype offers multiple payment options for your convenience: bank payment QR (compatible with all banks in Bolivia), direct bank transfers, and cryptocurrency payments (Bitcoin, USDT, Ethereum). All payments are processed securely and you receive automatic confirmation. For recurring subscription payments, we also accept direct debit for greater convenience."
       }
     },
     "cta": {
@@ -1183,7 +1193,338 @@
       "description": "Our team is ready to help you. Contact us via WhatsApp or email and we'll respond as soon as possible.",
       "whatsapp": "Contact via WhatsApp",
       "email": "Send Email",
-      "whatsappMessage": "Hi, I have a question about OPTUS"
+      "whatsappMessage": "Hi, I have a question about Optimype"
+    }
+  },
+  "seo": {
+    "title": "Optimype · AI agents that sell, schedule and collect payments on WhatsApp",
+    "description": "Optimype automates your business with AI agents on WhatsApp: 24/7 service, sales, bookings and payments, with no code. Built for Bolivian small businesses and startups. A brand by Optus."
+  },
+  "introductions": {
+    "title": "Introduction to Optimype",
+    "subtitle": "See how our automation works and what you can achieve with AI agents designed for Bolivian businesses.",
+    "ctaPrimary": "Contact us on WhatsApp",
+    "ctaSecondary": "View Services",
+    "stepsTitle": "How do we get started?",
+    "stepsSubtitle": "Three clear steps to roll out Optimype quickly and without friction.",
+    "steps": [
+      {
+        "icon": "fas fa-compass",
+        "title": "Initial Assessment",
+        "description": "We learn about your business and define the best automation flow for your customers."
+      },
+      {
+        "icon": "fas fa-sliders-h",
+        "title": "Smart Setup",
+        "description": "We configure your agents with your real information so they answer like your team does."
+      },
+      {
+        "icon": "fas fa-rocket",
+        "title": "Launch and Scale",
+        "description": "We switch your solution on and optimise results with real-time metrics."
+      }
+    ],
+    "videoTitle": "Optimype Pitch",
+    "videoSubtitle": "Watch the official summary of our proposal and how we transform businesses.",
+    "videoFallback": "Your browser does not support video playback.",
+    "socialTitle": "Follow us on social media",
+    "footer": "© 2026 Optimype · Introductions"
+  },
+  "auth": {
+    "back": "Back",
+    "backHomeAria": "Back to home",
+    "progressAria": "Sign-in progress",
+    "footer": "All rights reserved",
+    "choice": {
+      "titlePrefix": "Sign in to",
+      "tag": "Sign up",
+      "joinTitle": "Join a company",
+      "joinText": "Enter a company code and fill in your user details.",
+      "createTitle": "Create a company",
+      "createText": "Register your company with its basic details and give your team access.",
+      "haveAccount": "I already have an account, sign in"
+    },
+    "form": {
+      "titles": {
+        "login": "Sign in",
+        "join": "Join a company",
+        "create": "Create a company"
+      },
+      "subtitles": {
+        "login": "Use your email and password to enter the dashboard.",
+        "join": "Fill in your details and the company code to sign up.",
+        "create": "Fill in your personal details and your company's basic details."
+      },
+      "sections": {
+        "user": "User details",
+        "access": "Access",
+        "company": "Company"
+      },
+      "fields": {
+        "fullName": {
+          "label": "Full name",
+          "placeholder": "Your first and last name"
+        },
+        "phone": {
+          "label": "Phone (optional)"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "email@company.com"
+        },
+        "password": {
+          "label": "Password"
+        },
+        "companyCode": {
+          "label": "Company code",
+          "placeholder": "Enter your company's code"
+        },
+        "companyName": {
+          "label": "Company name",
+          "placeholder": "My company"
+        },
+        "companySlug": {
+          "label": "Company slug (optional)",
+          "placeholder": "my-company"
+        },
+        "industry": {
+          "label": "Industry",
+          "placeholder": "Select an industry"
+        },
+        "size": {
+          "label": "Size",
+          "placeholder": "Select a size"
+        },
+        "timeZone": {
+          "label": "Time zone"
+        },
+        "currency": {
+          "label": "Currency"
+        }
+      },
+      "industries": {
+        "technology": "Technology",
+        "retail": "Retail",
+        "services": "Services",
+        "food": "Food and beverages",
+        "health": "Healthcare",
+        "logistics": "Logistics",
+        "education": "Education",
+        "other": "Other"
+      },
+      "terms": "I accept the terms and authorise the creation of my account.",
+      "processing": "Processing...",
+      "submit": {
+        "login": "Sign in",
+        "join": "Sign up and join",
+        "create": "Register company"
+      }
+    },
+    "verify": {
+      "title": "Verify your email",
+      "sentBefore": "We sent a token to",
+      "sentAfter": "Enter it to activate your access.",
+      "fallbackEmail": "your registered email",
+      "tokenLabel": "Verification token",
+      "tokenPlaceholder": "Enter the token from the email",
+      "verifying": "Verifying...",
+      "submit": "Verify email",
+      "resend": "Resend token",
+      "backToForm": "Back to the form"
+    },
+    "errors": {
+      "request": "The request could not be completed.",
+      "terms": "You must accept the terms to continue.",
+      "fullName": "Full name is required.",
+      "companyCode": "You need a valid company code.",
+      "company": "Fill in the minimum company details.",
+      "noEmail": "We don't have an email to resend the verification to."
+    },
+    "messages": {
+      "needsVerification": "Your account needs verification.",
+      "checkEmail": "Check your email to verify your account.",
+      "companyCreated": "Your company was created. Verify your email to continue.",
+      "tokenSent": "We sent you a new verification token."
+    }
+  },
+  "log": {
+    "title": "Welcome",
+    "subtitle": "Sign in to your account",
+    "email": "Email",
+    "emailPlaceholder": "test@email.com",
+    "password": "Password",
+    "remember": "Remember me",
+    "forgot": "Forgot your password?",
+    "submit": "Sign In",
+    "noAccount": "Don't have an account?",
+    "register": "Sign up here"
+  },
+  "dashboard": {
+    "nav": {
+      "overview": "Overview",
+      "calendar": "Calendar",
+      "agenda": "Daily Agenda",
+      "appointments": "Appointments",
+      "team": "Team & Hours",
+      "commercial": "Commercial",
+      "services": "Services",
+      "products": "Products",
+      "orders": "Orders",
+      "customers": "Customers",
+      "agent": "AI Agent",
+      "knowledge": "Knowledge Base",
+      "liveChats": "Live Chats",
+      "settings": "Settings"
+    },
+    "user": {
+      "fallbackName": "Admin",
+      "role": "Administrator",
+      "logout": "Log Out",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "views": {
+      "agenda": {
+        "title": "Operations Calendar",
+        "text": "Daily and weekly grid by barber/stylist."
+      },
+      "appointments": {
+        "title": "Appointment List",
+        "text": "History with filters and statuses."
+      },
+      "team": {
+        "title": "Team & Hours",
+        "text": "Barbers, specialties and Google Calendar sync."
+      },
+      "services": {
+        "title": "Service Catalogue",
+        "text": "Duration, price, commissions."
+      },
+      "products": {
+        "title": "Product Inventory",
+        "text": "Physical products and stock."
+      },
+      "orders": {
+        "title": "Orders & Payments",
+        "text": "Payment history and express QR generation."
+      },
+      "customers": {
+        "title": "Customer Directory",
+        "text": "Customers registered through WhatsApp."
+      },
+      "liveChats": {
+        "title": "Live Chats",
+        "text": "Log of the bot's active conversations."
+      },
+      "businessProfile": {
+        "title": "Business Profile",
+        "text": "Business name, logo, time zone and currency."
+      }
+    },
+    "overview": {
+      "title": "Today's Summary",
+      "subtitle": "Real-time monitoring of your main branch",
+      "connected": "Connected (Live)",
+      "reconnecting": "Reconnecting...",
+      "kpis": {
+        "appointments": {
+          "title": "Today's Appointments",
+          "subtitle": "18 confirmed, 6 pending"
+        },
+        "revenue": {
+          "title": "Estimated Revenue",
+          "subtitle": "$850 paid, $390 outstanding"
+        },
+        "bot": {
+          "title": "AI Bot Activity",
+          "subtitle": "Messages processed, 12 appointments auto-booked"
+        },
+        "sync": {
+          "title": "Google Sync",
+          "value": "Synced",
+          "subtitle": "Last update 2 min ago. 0 conflicts."
+        }
+      },
+      "upcoming": {
+        "title": "Upcoming Appointments (Next 2 hrs)",
+        "viewAll": "View Full Calendar",
+        "with": "with",
+        "confirmed": "Confirmed",
+        "pending": "Pending",
+        "services": {
+          "classicCut": "Classic Cut",
+          "colorStyle": "Colour + Styling",
+          "beardTrim": "Beard Trim",
+          "manicure": "Manicure"
+        }
+      },
+      "feed": {
+        "title": "AI Agent Feed",
+        "live": "Live",
+        "items": [
+          {
+            "time": "1 min ago",
+            "action": "New appointment booked",
+            "description": "The bot booked a 'Fade Cut' for tomorrow at 10:00 AM with Marco."
+          },
+          {
+            "time": "5 min ago",
+            "action": "Price enquiry",
+            "description": "A customer asked about the price of the hair treatment. The bot answered successfully."
+          },
+          {
+            "time": "12 min ago",
+            "action": "Payment Received (QR)",
+            "description": "Order #ORD-892 paid by QR. $45.00 credited."
+          },
+          {
+            "time": "28 min ago",
+            "action": "Reminder sent",
+            "description": "4 automatic WhatsApp reminders were sent for this afternoon's appointments."
+          }
+        ]
+      }
+    },
+    "knowledge": {
+      "title": "AI Knowledge Base",
+      "subtitle": "Train your WhatsApp agent with automatic answers.",
+      "newEntry": "New Entry",
+      "agentStatus": "Agent Status",
+      "agentActive": "Active and Responding",
+      "activeIntents": "active intents",
+      "pauseAgent": "Pause Agent",
+      "searchPlaceholder": "Search by intent or question...",
+      "columns": {
+        "status": "Status",
+        "intent": "Intent / Topic",
+        "answer": "Configured Answer",
+        "actions": "Actions"
+      },
+      "edit": "Edit",
+      "delete": "Delete",
+      "noResults": "No entries found for your search.",
+      "entries": [
+        {
+          "intent": "Location",
+          "question": "Where are you located?",
+          "answer": "We are at Av. Principal 123, downtown, across from the central park."
+        },
+        {
+          "intent": "Payment Methods",
+          "question": "Which payment methods do you accept?",
+          "answer": "We accept cash, bank transfers, QR and debit/credit cards (Visa, Mastercard)."
+        },
+        {
+          "intent": "Parking",
+          "question": "Do you have your own parking?",
+          "answer": "Yes, we have free customer parking in the building's basement."
+        },
+        {
+          "intent": "Promotions",
+          "question": "Do you have any promotions?",
+          "answer": "On Tuesdays classic cuts are 2-for-1. And on your first visit you get a free hair wash."
+        }
+      ]
     }
   }
 }

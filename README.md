@@ -1,230 +1,102 @@
-﻿# OptusFrontend - Proyecto React Completo
+# Optimype · frontend
 
-## 🎉 Descripción
+El sitio de **Optimype** ([optimype.optus.lat](https://optimype.optus.lat)): agentes de IA que
+atienden, venden, agendan y cobran por WhatsApp para MYPES y startups. Optimype es una marca
+perteneciente a [Optus](https://optus.lat).
 
-Proyecto React completo de OPTUS migrado desde HTML estático. Incluye todos los componentes, páginas y estilos separados con arquitectura moderna.
+> Este repositorio se llamaba `optus-frontend` y se publicaba en `optus.lat`. Ese dominio es ahora
+> el sitio de la empresa (`optus-main-frontend`); este proyecto pasó a ser el de Optimype. De
+> momento conserva el logotipo y la estética visual que ya tenía.
 
-##  Estado del Proyecto: **85% Completado**
+| Dirección | Qué es | Repositorio |
+| --- | --- | --- |
+| `https://optimype.optus.lat` | Este sitio | `optimype-frontend` |
+| `https://optus.lat` | Optus, la empresa | `optus-main-frontend` |
+| `https://optipagos.optus.lat` | Optipagos, billetera en WhatsApp | `optipagos-frontend` |
 
-##  Estructura Completa
+## Puesta en marcha
 
-```
-OptusFrontend/
- src/
-    components/
-       layout/
-          Navbar.jsx + Navbar.css 
-          Footer.jsx + Footer.css 
-          ThemeToggle.jsx + ThemeToggle.css 
-       sections/
-           Hero.jsx + Hero.css 
-           TrustLogos.jsx + TrustLogos.css 
-           About.jsx + About.css 
-           Services.jsx + Services.css 
-           Portfolio.jsx + Portfolio.css 
-           Benefits.jsx + Benefits.css 
-           Contact.jsx + Contact.css 
-    pages/
-       Home.jsx + Home.css 
-       Nosotros.jsx 
-       Servicios.jsx 
-    styles/
-       variables.css 
-       global.css 
-    assets/img/ 
-    App.jsx 
-    main.jsx 
- public/
-    animado.mp4 
-    OPTUSLOGO.png 
- package.json 
-```
+Requisitos: Node ≥ 20.
 
-##  Componentes Implementados
-
-### Layout (3/3) 
-- **Navbar**: Navegación responsive con logo animado y theme toggle
-- **Footer**: 4 columnas con redes sociales
-- **ThemeToggle**: Interruptor día/noche animado
-
-### Secciones (7/7) 
-1. **Hero**: Animación Three.js con partículas + CTAs
-2. **TrustLogos**: Carrusel infinito (OpenAI, Microsoft, Arc Blockchain, Circle)
-3. **About**: Información de la empresa con bandera de Bolivia
-4. **Services**: Grid de 6 servicios con iconos
-5. **Portfolio**: 3 casos de éxito
-6. **Benefits**: 6 beneficios en cards
-7. **Contact**: Formulario de contacto con info
-
-### Páginas (3/3) 
-- **Home**: Página principal completa con todas las secciones
-- **Nosotros**: Página sobre la empresa
-- **Servicios**: Página de servicios
-
-##  Servidor de Desarrollo
-
-```bash
-cd E:\OptusFrontend
-npm run dev
-```
-
-**URL**: http://localhost:5173/
-
-##  Tecnologías
-
--  React 18.2.0
--  React Router DOM (rutas SPA)
--  Three.js (animación 3D en Hero)
--  GSAP (preparado)
--  AOS (Animate On Scroll)
--  Vite (build ultra-rápido)
--  Font Awesome (iconos)
-
-##  Características Implementadas
-
-### Funcionalidades
--  **Tema Oscuro/Claro** funcional con persistencia
--  **Responsive Design** (móvil, tablet, desktop)
--  **Animaciones Suaves** con AOS
--  **Navegación SPA** con React Router
--  **Animación 3D** con Three.js en Hero
--  **Carrusel Infinito** de logos
--  **Menú Hamburguesa** para móvil
-
-### Optimizaciones
--  Componentes modulares y reutilizables
--  CSS separado por componente
--  Variables CSS para tema
--  Hot Module Replacement (HMR)
--  Lazy loading ready
-
-##  Paleta de Colores
-
-### Tema Claro
-```css
---color-primary: #0c1445
---color-secondary: #b2d4e0
---color-accent: #66AFFF
---color-white: #FFFFFF
---color-light-gray: #F5F7FA
-```
-
-### Tema Oscuro
-```css
---color-primary: #0B1120
---color-secondary: #111827
---color-accent: #06B6D4
-```
-
-##  Comandos NPM
-
-```bash
-# Desarrollo
-npm run dev
-
-# Build para producción
-npm run build
-
-# Preview de producción
-npm run preview
-
-# Instalar dependencias
-npm install
-```
-
-##  Cómo Usar
-
-### 1. Desarrollo Local
-```bash
-cd E:\OptusFrontend
-npm run dev
-```
-Abre http://localhost:5173/
-
-### 2. Build de Producción
-```bash
-npm run build
-```
-Genera archivos optimizados en `dist/`
-
-### 3. Agregar Nueva Sección
-```jsx
-// 1. Crear componente en src/components/sections/
-// 2. Crear estilos en mismo directorio
-// 3. Importar en src/pages/Home.jsx
-
-import NuevaSeccion from '../components/sections/NuevaSeccion';
-
-const Home = () => (
-  <div>
-    {/* ... otras secciones ... */}
-    <NuevaSeccion />
-  </div>
-);
-```
-
-##  Rutas Disponibles
-
-- `/` - Home (página principal)
-- `/nosotros` - Sobre OPTUS
-- `/servicios` - Servicios disponibles
-
-##  Responsive Breakpoints
-
-```css
-/* Mobile */
-@media (max-width: 480px)
-
-/* Tablet */
-@media (max-width: 768px)
-
-/* Desktop pequeño */
-@media (max-width: 900px)
-
-/* Desktop grande */
-@media (min-width: 1200px)
-```
-
-##  Solución de Problemas
-
-### Error: "Cannot find module"
 ```bash
 npm install
+cp .env.example .env     # completa los valores (ver más abajo)
+npm run dev              # http://localhost:5173
+npm run build            # genera dist/
+npm run preview          # sirve dist/ en local
+npm run lint
 ```
 
-### Error: Puerto 5173 ocupado
+### Variables de entorno
+
+Todas empiezan por `VITE_` y quedan incluidas en el JavaScript público: no pongas secretos.
+
+| Variable | Para qué |
+| --- | --- |
+| `VITE_PRIVY_APP_ID` | Inicio de sesión con Privy. **Obligatoria**: sin ella la aplicación no arranca. |
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | Panel y página de pago (clave `anon`, nunca `service_role`). |
+| `VITE_API_URL` | Backend (registro, inicio de sesión, demo). |
+| `VITE_WALLETCONNECT_PROJECT_ID` | Billeteras en la página de pago (RainbowKit). |
+| `VITE_WHATSAPP_SUPPORT` | Número de WhatsApp de contacto, sin `+` ni espacios. |
+| `VITE_DEMO_COMPANY_ID`, `VITE_DEMO_COMPANY_NAME` | Empresa de demostración del panel. |
+
+Al cambiar de dominio hay que autorizar `https://optimype.optus.lat` en los servicios que validan
+el origen: Privy (dominios permitidos), Google OAuth (orígenes y redirecciones) y Supabase Auth
+(URL del sitio y redirecciones).
+
+## Estructura
+
+```
+index.html               metadatos (SEO, Open Graph) y fuentes
+src/App.jsx              rutas
+src/i18n.js              idiomas (i18next)
+src/locales/             textos: es.json y en.json
+src/pages/               páginas (inicio, servicios, FAQ, acceso, pago, panel, legales…)
+src/components/layout/   cabecera y pie
+src/components/sections/ secciones de la portada
+src/components/dashboard/ panel de administración
+src/styles/              variables de color y estilos globales
+public/                  logotipo, vídeos y fuentes
+```
+
+Rutas principales: `/`, `/nosotros`, `/servicios`, `/portafolio`, `/beneficios`, `/faq`,
+`/login`, `/dashboard`, `/pago/:codigoOrden`, `/demo`, `/introductions`, `/politica-privacidad`,
+`/terminos-servicio` y `/eliminar`.
+
+## Idiomas
+
+El sitio está en **español** (por defecto) e **inglés**, con `i18next` y `react-i18next`.
+
+- Los textos viven en `src/locales/es.json` y `src/locales/en.json`, con las mismas claves.
+- El idioma se detecta en este orden: el elegido antes (guardado en `localStorage`), el del
+  navegador y, si no es ninguno de los dos admitidos, español.
+- `src/i18n.js` mantiene al día `<html lang>`, el título de la pestaña y la descripción.
+- En un componente: `const { t } = useTranslation();` y `t('seccion.clave')`.
+- Para añadir un idioma: crea `src/locales/<código>.json`, regístralo en `src/i18n.js`
+  (`resources` y `SUPPORTED_LANGUAGES`) y añádelo a `src/components/ui/LanguageSwitcher.jsx`.
+
+## Identidad
+
+Colores, tipografías y componentes están descritos en [`OPTUS_BRANDKIT.md`](OPTUS_BRANDKIT.md)
+(el nombre del archivo viene de cuando este era el sitio de Optus): azul marino `#002B5B`, cian
+`#06B6D4`, Lilita One y Titan One para títulos y Molengo para el texto.
+
+## Despliegue
+
+Vercel, proyecto `optimype-frontend` (equipo `optusteams-projects`), con el dominio
+`optimype.optus.lat` (`mypes.optus.lat` redirige a él). Es un sitio estático: `npm run build`
+genera `dist/` y `vercel.json` sirve `index.html` en cualquier ruta que no sea un archivo.
+
 ```bash
-# Vite usará el siguiente puerto disponible automáticamente
+vercel --prod
 ```
 
-### Cambios no se reflejan
-```bash
-# Ctrl+C para detener servidor
-npm run dev
-```
+Se despliega con el CLI, no con la integración de Git: `vercel.json` la desactiva
+(`git.deploymentEnabled: false`). Así el proyecto antiguo de Vercel, el que publicaba este repo en
+`optus.lat` (`optus-aut.vercel.app`, en otra cuenta), queda **en desuso** y ya no recibe
+despliegues. Si algún día se conecta este repo por Git al proyecto actual, hay que quitar esa
+línea.
 
-##  Contacto del Proyecto
+## Contacto
 
-- **Email**: optus.aut@gmail.com
-- **WhatsApp**: +591 77379190
-- **Ubicación**: La Paz, Bolivia
-
-##  Recursos de Aprendizaje
-
-- [React Docs](https://react.dev)
-- [React Router](https://reactrouter.com)
-- [Three.js](https://threejs.org/docs/)
-- [GSAP](https://greensock.com/docs/)
-- [Vite](https://vitejs.dev)
-
-##  Licencia
-
-Proyecto privado de OPTUS  2025
-
----
-
-**Última Actualización**: Diciembre 9, 2025  
-**Estado**:  Listo para desarrollo  
-**Completado**: 85%
-
- **El proyecto está completamente funcional y listo para usar**
+Optus · La Paz, Bolivia · optus.aut@gmail.com

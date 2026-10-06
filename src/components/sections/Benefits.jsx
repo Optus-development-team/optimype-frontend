@@ -47,7 +47,7 @@ const Benefits = () => {
       id="benefits"
     >
       <div className="container">
-        <h2 className="section-title" data-aos="fade-up">Beneficios Inmediatos de OPTUS</h2>
+        <h2 className="section-title" data-aos="fade-up">Beneficios Inmediatos de Optimype</h2>
         <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
           Más que una herramienta, una palanca para el crecimiento.
         </p>

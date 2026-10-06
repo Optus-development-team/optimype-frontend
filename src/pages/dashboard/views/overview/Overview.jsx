@@ -11,6 +11,7 @@ import {
   CircleDashed,
   AlertCircle
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './Overview.css';
 
 const KPICard = ({ title, value, subtitle, icon: Icon, colorClass }) => (
@@ -26,7 +27,10 @@ const KPICard = ({ title, value, subtitle, icon: Icon, colorClass }) => (
   </div>
 );
 
-const AppointmentItem = ({ time, customer, service, staff, status }) => (
+const AppointmentItem = ({ time, customer, service, staff, status }) => {
+  const { t } = useTranslation();
+
+  return (
   <div className="appointment-item">
     <div className="appointment-time">
       <Clock size={16} />
@@ -36,18 +40,19 @@ const AppointmentItem = ({ time, customer, service, staff, status }) => (
       <h4 className="customer-name">{customer}</h4>
       <div className="service-info">
         <Scissors size={14} />
-        <span>{service} con {staff}</span>
+        <span>{service} {t('dashboard.overview.upcoming.with')} {staff}</span>
       </div>
     </div>
     <div className="appointment-status">
       {status === 'confirmed' ? (
-        <span className="badge badge-success"><CheckCircle2 size={14}/> Confirmada</span>
+        <span className="badge badge-success"><CheckCircle2 size={14}/> {t('dashboard.overview.upcoming.confirmed')}</span>
       ) : (
-        <span className="badge badge-warning"><CircleDashed size={14}/> Pendiente</span>
+        <span className="badge badge-warning"><CircleDashed size={14}/> {t('dashboard.overview.upcoming.pending')}</span>
       )}
     </div>
   </div>
-);
+  );
+};
 
 const BotFeedItem = ({ time, action, description, type }) => {
   const getTypeIcon = () => {
@@ -75,6 +80,9 @@ const BotFeedItem = ({ time, action, description, type }) => {
 
 export const Overview = () => {
   const [isConnected, setIsConnected] = useState(true);
+  const { t } = useTranslation();
+  const feed = t('dashboard.overview.feed.items', { returnObjects: true });
+  const feedTypes = ['booking', 'query', 'payment', 'query'];
 
   // Simulación de reconexión SSE
   useEffect(() => {
@@ -89,13 +97,13 @@ export const Overview = () => {
       {/* Top Bar Status */}
       <div className="overview-header">
         <div>
-          <h1 className="page-title">Resumen de Hoy</h1>
-          <p className="page-subtitle">Monitoreo en tiempo real de tu sucursal principal</p>
+          <h1 className="page-title">{t('dashboard.overview.title')}</h1>
+          <p className="page-subtitle">{t('dashboard.overview.subtitle')}</p>
         </div>
         <div className="status-indicators">
           <div className={`sse-status ${isConnected ? 'connected' : 'reconnecting'}`}>
             <span className="status-dot"></span>
-            {isConnected ? 'Conectado (Live)' : 'Reconectando...'}
+            {isConnected ? t('dashboard.overview.connected') : t('dashboard.overview.reconnecting')}
           </div>
         </div>
       </div>
@@ -103,30 +111,30 @@ export const Overview = () => {
       {/* KPI Cards Row */}
       <div className="kpi-grid">
         <KPICard 
-          title="Citas del Día" 
+          title={t('dashboard.overview.kpis.appointments.title')}
           value="24" 
-          subtitle="18 confirmadas, 6 pendientes"
+          subtitle={t('dashboard.overview.kpis.appointments.subtitle')}
           icon={CalendarCheck}
           colorClass="kpi-blue"
         />
         <KPICard 
-          title="Ingresos Estimados" 
+          title={t('dashboard.overview.kpis.revenue.title')}
           value="$1,240.00" 
-          subtitle="$850 pagados, $390 por cobrar"
+          subtitle={t('dashboard.overview.kpis.revenue.subtitle')}
           icon={DollarSign}
           colorClass="kpi-green"
         />
         <KPICard 
-          title="Actividad Bot IA" 
+          title={t('dashboard.overview.kpis.bot.title')}
           value="142" 
-          subtitle="Mensajes procesados, 12 citas auto-agendadas"
+          subtitle={t('dashboard.overview.kpis.bot.subtitle')}
           icon={MessageCircle}
           colorClass="kpi-purple"
         />
         <KPICard 
-          title="Google Sync" 
-          value="Sincronizado" 
-          subtitle="Última act. hace 2 min. 0 conflictos."
+          title={t('dashboard.overview.kpis.sync.title')}
+          value={t('dashboard.overview.kpis.sync.value')}
+          subtitle={t('dashboard.overview.kpis.sync.subtitle')}
           icon={RefreshCcw}
           colorClass="kpi-orange"
         />
@@ -138,28 +146,27 @@ export const Overview = () => {
         {/* Left Column: Upcoming Appointments */}
         <div className="card-panel">
           <div className="panel-header">
-            <h2 className="panel-title">Próximas Citas (Siguientes 2 hrs)</h2>
-            <button className="btn-link">Ver Agenda Completa</button>
+            <h2 className="panel-title">{t('dashboard.overview.upcoming.title')}</h2>
+            <button className="btn-link">{t('dashboard.overview.upcoming.viewAll')}</button>
           </div>
           <div className="appointments-list">
-            <AppointmentItem time="16:30" customer="Carlos Ruiz" service="Corte Clásico" staff="Marco" status="confirmed" />
-            <AppointmentItem time="17:00" customer="Ana Silva" service="Tinte + Peinado" staff="Lucia" status="pending" />
-            <AppointmentItem time="17:15" customer="Jorge Lopez" service="Arreglo de Barba" staff="Marco" status="confirmed" />
-            <AppointmentItem time="18:00" customer="Sofia Castro" service="Manicura" staff="Andrea" status="confirmed" />
+            <AppointmentItem time="16:30" customer="Carlos Ruiz" service={t('dashboard.overview.upcoming.services.classicCut')} staff="Marco" status="confirmed" />
+            <AppointmentItem time="17:00" customer="Ana Silva" service={t('dashboard.overview.upcoming.services.colorStyle')} staff="Lucia" status="pending" />
+            <AppointmentItem time="17:15" customer="Jorge Lopez" service={t('dashboard.overview.upcoming.services.beardTrim')} staff="Marco" status="confirmed" />
+            <AppointmentItem time="18:00" customer="Sofia Castro" service={t('dashboard.overview.upcoming.services.manicure')} staff="Andrea" status="confirmed" />
           </div>
         </div>
 
         {/* Right Column: Bot Activity Feed */}
         <div className="card-panel bot-feed-panel">
           <div className="panel-header">
-            <h2 className="panel-title">Feed del Agente IA</h2>
-            <span className="live-badge">En Vivo</span>
+            <h2 className="panel-title">{t('dashboard.overview.feed.title')}</h2>
+            <span className="live-badge">{t('dashboard.overview.feed.live')}</span>
           </div>
           <div className="bot-feed-list">
-            <BotFeedItem time="Hace 1 min" action="Nueva cita agendada" description="El bot agendó un 'Corte Degradé' para mañana a las 10:00 AM con Marco." type="booking" />
-            <BotFeedItem time="Hace 5 min" action="Consulta de precios" description="Cliente consultó sobre el precio del tratamiento capilar. Bot respondió exitosamente." type="query" />
-            <BotFeedItem time="Hace 12 min" action="Pago Recibido (QR)" title="Pago Recibido" description="Orden #ORD-892 pagada vía QR. $45.00 acreditados." type="payment" />
-            <BotFeedItem time="Hace 28 min" action="Recordatorio enviado" description="Se enviaron 4 recordatorios automáticos por WhatsApp para las citas de la tarde." type="query" />
+            {Array.isArray(feed) && feed.map((item, index) => (
+              <BotFeedItem key={index} time={item.time} action={item.action} description={item.description} type={feedTypes[index]} />
+            ))}
           </div>
         </div>
 

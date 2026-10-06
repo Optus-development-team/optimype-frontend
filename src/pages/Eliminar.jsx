@@ -34,20 +34,20 @@ const Eliminar = () => {
     e.preventDefault();
 
     const emailBody = `
-${t('delete.title')} - OPTUS
+${t('delete.title')} - Optimype
 
 ${t('delete.form.fullName.label')} ${formData.fullName}
 ${t('delete.form.email.label')} ${formData.email}
 ${t('delete.form.phone.label')} ${formData.phone}
 ${t('delete.form.company.label')} ${formData.company || t('delete.form.company.placeholder')}
-${t('delete.form.accountId.label')} ${formData.accountId || 'No especificado'}
+${t('delete.form.accountId.label')} ${formData.accountId || t('delete.form.notSpecified')}
 ${t('delete.form.reason.label')} ${formData.reason}
 
 ${t('delete.form.details.label')}
-${formData.details || 'Ninguno'}
+${formData.details || t('delete.form.none')}
 
 ---
-Esta solicitud fue enviada desde el formulario de eliminaci\u00f3n de informaci\u00f3n de OPTUS.
+${t('delete.emailFooter')}
     `.trim();
 
     const mailtoLink = `mailto:optus.aut@gmail.com?subject=${encodeURIComponent(t('delete.title') + ' - ' + formData.fullName)}&body=${encodeURIComponent(emailBody)}`;

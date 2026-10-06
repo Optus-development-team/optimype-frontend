@@ -17,47 +17,48 @@ import {
   X
 } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
+import { useTranslation } from 'react-i18next';
 import './Sidebar.css';
 
 const navItems = [
   {
-    title: 'Overview',
+    titleKey: 'overview',
     path: '/dashboard/overview',
     icon: <LayoutDashboard size={20} />
   },
   {
-    title: 'Agenda',
+    titleKey: 'calendar',
     icon: <Calendar size={20} />,
     subItems: [
-      { title: 'Agenda Diaria', path: '/dashboard/calendar/agenda' },
-      { title: 'Citas', path: '/dashboard/calendar/appointments' },
-      { title: 'Equipo & Horarios', path: '/dashboard/calendar/team' },
+      { titleKey: 'agenda', path: '/dashboard/calendar/agenda' },
+      { titleKey: 'appointments', path: '/dashboard/calendar/appointments' },
+      { titleKey: 'team', path: '/dashboard/calendar/team' },
     ]
   },
   {
-    title: 'Comercial',
+    titleKey: 'commercial',
     icon: <Scissors size={20} />,
     subItems: [
-      { title: 'Servicios', path: '/dashboard/commercial/services' },
-      { title: 'Productos', path: '/dashboard/commercial/products' },
-      { title: 'Órdenes', path: '/dashboard/commercial/orders' },
+      { titleKey: 'services', path: '/dashboard/commercial/services' },
+      { titleKey: 'products', path: '/dashboard/commercial/products' },
+      { titleKey: 'orders', path: '/dashboard/commercial/orders' },
     ]
   },
   {
-    title: 'Clientes',
+    titleKey: 'customers',
     path: '/dashboard/customers/directory',
     icon: <Users size={20} />
   },
   {
-    title: 'Agente IA',
+    titleKey: 'agent',
     icon: <MessageSquare size={20} />,
     subItems: [
-      { title: 'Base de Conocimiento', path: '/dashboard/bot-ai/knowledge' },
-      { title: 'Chats en Vivo', path: '/dashboard/bot-ai/live-chats' },
+      { titleKey: 'knowledge', path: '/dashboard/bot-ai/knowledge' },
+      { titleKey: 'liveChats', path: '/dashboard/bot-ai/live-chats' },
     ]
   },
   {
-    title: 'Configuración',
+    titleKey: 'settings',
     path: '/dashboard/settings/business-profile',
     icon: <Settings size={20} />
   }
@@ -65,6 +66,7 @@ const navItems = [
 
 const SidebarItem = ({ item, isMobile, closeMobile }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   if (item.subItems) {
     return (
@@ -75,7 +77,7 @@ const SidebarItem = ({ item, isMobile, closeMobile }) => {
         >
           <div className="sidebar-link-content">
             {item.icon}
-            <span>{item.title}</span>
+            <span>{t(`dashboard.nav.${item.titleKey}`)}</span>
           </div>
           {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
         </button>
@@ -88,7 +90,7 @@ const SidebarItem = ({ item, isMobile, closeMobile }) => {
                 className={({isActive}) => `sidebar-sublink ${isActive ? 'active' : ''}`}
                 onClick={isMobile ? closeMobile : undefined}
               >
-                {sub.title}
+                {t(`dashboard.nav.${sub.titleKey}`)}
               </NavLink>
             ))}
           </div>
@@ -105,7 +107,7 @@ const SidebarItem = ({ item, isMobile, closeMobile }) => {
     >
       <div className="sidebar-link-content">
         {item.icon}
-        <span>{item.title}</span>
+        <span>{t(`dashboard.nav.${item.titleKey}`)}</span>
       </div>
     </NavLink>
   );
@@ -114,6 +116,7 @@ const SidebarItem = ({ item, isMobile, closeMobile }) => {
 export const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
   const { logout, user } = usePrivy();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     await logout();
@@ -129,8 +132,8 @@ export const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
       
       <aside className={`dashboard-sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
-          <img src="/OPTUSLOGO.png" alt="Optus Logo" className="sidebar-logo" />
-          <button className="mobile-close-btn" onClick={() => setIsMobileOpen(false)}>
+          <img src="/OPTUSLOGO.png" alt="Optimype" className="sidebar-logo" />
+          <button className="mobile-close-btn" onClick={() => setIsMobileOpen(false)} aria-label={t('dashboard.user.closeMenu')}>
             <X size={24} />
           </button>
         </div>
@@ -152,13 +155,13 @@ export const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
               {user?.email?.address?.charAt(0).toUpperCase() || 'O'}
             </div>
             <div className="user-details">
-              <span className="user-name">{user?.email?.address || 'Admin'}</span>
-              <span className="user-role">Administrador</span>
+              <span className="user-name">{user?.email?.address || t('dashboard.user.fallbackName')}</span>
+              <span className="user-role">{t('dashboard.user.role')}</span>
             </div>
           </div>
           <button className="logout-btn" onClick={handleLogout}>
             <LogOut size={18} />
-            <span>Cerrar Sesión</span>
+            <span>{t('dashboard.user.logout')}</span>
           </button>
         </div>
       </aside>

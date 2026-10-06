@@ -34,7 +34,7 @@ const Portfolio = () => {
       <div className="container">
         <h2 className="section-title" data-aos="fade-up">Casos de Éxito Instantáneo</h2>
         <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-          Resultados tangibles. Ve cómo OPTUS transforma negocios reales.
+          Resultados tangibles. Ve cómo Optimype transforma negocios reales.
         </p>
 
         <div className="portfolio-grid">

@@ -1,10 +1,10 @@
-# OPTUS Brand Kit
+# Optimype Brand Kit
 
-This file collects the visual system, style sources, and reusable UI context for moving OPTUS to another repository without losing the current look and feel.
+This file collects the visual system, style sources, and reusable UI context of this site. It was written when the site was still the OPTUS company site; the product is now **Optimype** (a brand owned by Optus) and, for now, it keeps this same logo and look and feel.
 
 ## 1) Core Visual Identity
 
-- Brand name: OPTUS
+- Brand name: Optimype (formerly shown as OPTUS)
 - Primary mood: clean, modern, business-focused, AI/automation-oriented
 - Main accent color: `#06B6D4`
 - Main primary color: `#002B5B`

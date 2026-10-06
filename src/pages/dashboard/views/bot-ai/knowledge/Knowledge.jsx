@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { Plus, Search, Edit2, Trash2, Bot, CheckCircle, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './Knowledge.css';
 
+// Sample entries: the texts come from the active language, the state lives here
 const initialKnowledge = [
-  { id: 1, intent: 'Ubicación', question: '¿Dónde están ubicados?', answer: 'Estamos ubicados en Av. Principal 123, Centro. Frente al parque central.', active: true },
-  { id: 2, intent: 'Métodos de Pago', question: '¿Qué métodos de pago aceptan?', answer: 'Aceptamos efectivo, transferencias bancarias, QR y tarjetas de débito/crédito (Visa, Mastercard).', active: true },
-  { id: 3, intent: 'Parqueo', question: '¿Tienen parqueo propio?', answer: 'Sí, contamos con parqueo gratuito para clientes en el subsuelo del edificio.', active: true },
-  { id: 4, intent: 'Promociones', question: '¿Tienen promociones?', answer: 'Los martes tenemos 2x1 en cortes clásicos. Además, en tu primera visita te regalamos un lavado capilar.', active: false },
+  { id: 1, active: true },
+  { id: 2, active: true },
+  { id: 3, active: true },
+  { id: 4, active: false },
 ];
 
 export const Knowledge = () => {
-  const [entries, setEntries] = useState(initialKnowledge);
+  const { t } = useTranslation();
+  const [state] = useState(initialKnowledge);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const texts = t('dashboard.knowledge.entries', { returnObjects: true });
+  const entries = state.map((entry, index) => ({ ...entry, ...(Array.isArray(texts) ? texts[index] : {}) }));
 
   const filteredEntries = entries.filter(e => 
     e.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -22,12 +28,12 @@ export const Knowledge = () => {
     <div className="knowledge-container">
       <div className="knowledge-header">
         <div>
-          <h1 className="page-title">Base de Conocimiento IA</h1>
-          <p className="page-subtitle">Entrena a tu agente de WhatsApp con respuestas automáticas.</p>
+          <h1 className="page-title">{t('dashboard.knowledge.title')}</h1>
+          <p className="page-subtitle">{t('dashboard.knowledge.subtitle')}</p>
         </div>
         <button className="btn btn-primary btn-icon">
           <Plus size={20} />
-          Nuevo Registro
+          {t('dashboard.knowledge.newEntry')}
         </button>
       </div>
 
@@ -37,12 +43,12 @@ export const Knowledge = () => {
             <div className="bot-avatar">
               <Bot size={32} />
             </div>
-            <h3>Estado del Agente</h3>
-            <div className="status-badge active">Activo y Respondiendo</div>
+            <h3>{t('dashboard.knowledge.agentStatus')}</h3>
+            <div className="status-badge active">{t('dashboard.knowledge.agentActive')}</div>
             <p className="bot-stats">
-              <strong>{entries.filter(e => e.active).length}</strong> intenciones activas
+              <strong>{entries.filter(e => e.active).length}</strong> {t('dashboard.knowledge.activeIntents')}
             </p>
-            <button className="btn btn-secondary w-full mt-4">Pausar Agente</button>
+            <button className="btn btn-secondary w-full mt-4">{t('dashboard.knowledge.pauseAgent')}</button>
           </div>
         </div>
 
@@ -51,7 +57,8 @@ export const Knowledge = () => {
             <Search size={20} className="search-icon" />
             <input 
               type="text" 
-              placeholder="Buscar por intención o pregunta..." 
+              placeholder={t('dashboard.knowledge.searchPlaceholder')}
+              aria-label={t('dashboard.knowledge.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -61,10 +68,10 @@ export const Knowledge = () => {
             <table className="entries-table">
               <thead>
                 <tr>
-                  <th>Estado</th>
-                  <th>Intención / Tema</th>
-                  <th>Respuesta Configurada</th>
-                  <th>Acciones</th>
+                  <th>{t('dashboard.knowledge.columns.status')}</th>
+                  <th>{t('dashboard.knowledge.columns.intent')}</th>
+                  <th>{t('dashboard.knowledge.columns.answer')}</th>
+                  <th>{t('dashboard.knowledge.columns.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,8 +93,8 @@ export const Knowledge = () => {
                     </td>
                     <td>
                       <div className="action-buttons">
-                        <button className="action-btn edit"><Edit2 size={16} /></button>
-                        <button className="action-btn delete"><Trash2 size={16} /></button>
+                        <button className="action-btn edit" aria-label={t('dashboard.knowledge.edit')}><Edit2 size={16} /></button>
+                        <button className="action-btn delete" aria-label={t('dashboard.knowledge.delete')}><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
@@ -97,7 +104,7 @@ export const Knowledge = () => {
             
             {filteredEntries.length === 0 && (
               <div className="no-results">
-                No se encontraron registros para tu búsqueda.
+                {t('dashboard.knowledge.noResults')}
               </div>
             )}
           </div>
